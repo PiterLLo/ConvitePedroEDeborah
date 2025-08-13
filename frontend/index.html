@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <base target="_self">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosso Casamento</title>
+    <meta name="description" content="Celebre conosco nosso grande dia">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <script>
+document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const data = {
+        name: document.getElementById('name').value,
+        contact: document.getElementById('contact').value,
+        attending: document.querySelector('input[name="attending"]:checked').value,
+        message: document.getElementById('message').value
+    };
+
+    const response = await fetch('/api/rsvp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+        document.getElementById('rsvpForm').classList.add('hidden');
+        document.getElementById('thankYouMessage').classList.remove('hidden');
+    } else {
+        alert('Erro ao enviar confirmação: ' + (result.error || 'Tente novamente'));
+    }
+});
+</script>
+    <style>
+        body {
+            background-color: #FFF9FB;
+        }
+        .hero-image {
+            background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('https://picsum.photos/1600/900?random=1');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="font-body text-text">
+    <header>
+        <div class="hero-image h-screen flex flex-col justify-center items-center text-center text-white px-4">
+            <h1 class="font-heading text-5xl md:text-7xl mb-4">Déborah & Pedro Vinícius</h1>
+            <p class="text-xl md:text-2xl max-w-2xl">"O amor não se vê com os olhos, mas com o coração."</p>
+            <div class="mt-8">
+                <p class="text-2xl">22 • 11 • 2025</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-12 max-w-6xl">
+        <!-- RSVP Section -->
+        <section class="mb-20">
+            <h2 class="font-heading text-3xl md:text-4xl text-center mb-8">Confirmação de Presença</h2>
+            <div class="bg-primary rounded-lg p-8 max-w-2xl mx-auto shadow-lg">
+                <form id="rsvpForm" class="space-y-6">
+                    <div>
+                        <label for="name" class="block mb-2">Nome Completo</label>
+                        <input type="text" id="name" required class="w-full p-3 rounded border border-secondary focus:ring-2 focus:ring-accent focus:border-transparent">
+                    </div>
+                    <div>
+                        <label for="contact" class="block mb-2">Email ou Telefone</label>
+                        <input type="text" id="contact" required class="w-full p-3 rounded border border-secondary focus:ring-2 focus:ring-accent focus:border-transparent">
+                    </div>
+                    <div>
+                        <p class="mb-2">Confirmar presença?</p>
+                        <div class="flex space-x-4">
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="attending" value="yes" class="text-accent focus:ring-accent" checked>
+                                <span class="ml-2">Sim, estarei presente</span>
+                            </label>
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="attending" value="no" class="text-accent focus:ring-accent">
+                                <span class="ml-2">Não poderei comparecer</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="message" class="block mb-2">Mensagem para os noivos (opcional)</label>
+                        <textarea id="message" rows="4" class="w-full p-3 rounded border border-secondary focus:ring-2 focus:ring-accent focus:border-transparent"></textarea>
+                    </div>
+                    <button type="submit" class="bg-accent text-white py-3 px-6 rounded-lg hover:bg-opacity-90 transition duration-300 w-full">Enviar Confirmação</button>
+                </form>
+                <div id="thankYouMessage" class="hidden text-center py-8">
+                    <h3 class="font-heading text-2xl mb-4">Obrigado pela sua confirmação!</h3>
+                    <p>Sua resposta foi registrada com sucesso.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Location Section -->
+        <section class="mb-20">
+            <h2 class="font-heading text-3xl md:text-4xl text-center mb-8">Localização</h2>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <h3 class="text-xl font-medium mb-4">Cerimônia e Recepção</h3>
+                    <p class="mb-2">Fazenda Vale das Flores</p>
+                    <p class="mb-2">Rodovia BR-040, Km 45</p>
+                    <p class="mb-4">Penedo, Itatiaia - RJ</p>
+                    <p class="mb-2"><strong>Horário:</strong> 16h</p>
+                    <a href="#" class="text-accent underline hover:no-underline">Ver lista de presentes</a>
+                </div>
+                <div class="h-96 bg-gray-200 rounded-lg overflow-hidden">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14701.18683176188!2d-44.5616777!3d-22.9024491!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9e9edebbb354f1%3A0x6d6a7d1d3a6e4b1e!2sItatiaia%2C%20RJ!5e0!3m2!1spt-BR!2sbr!4v1620000000000!5m2!1spt-BR!2sbr" 
+                            width="100%" 
+                            height="100%" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            class="rounded-lg">
+                    </iframe>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-primary py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p>© 2024 Ana & Pedro. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('rsvpForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // In a real implementation, you would send this data to a server
+            document.getElementById('rsvpForm').classList.add('hidden');
+            document.getElementById('thankYouMessage').classList.remove('hidden');
+        });
+    </script>
+</body>
+</html> 
