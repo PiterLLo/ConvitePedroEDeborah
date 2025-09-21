@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lista de Presentes | Déborah & Pedro Vinícius</title>
+  <title>Nosso Casamento | Déborah & Pedro Vinícius</title>
+  <meta name="description" content="Celebre conosco nosso grande dia">
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
@@ -20,6 +24,7 @@
       background-color: var(--light);
       font-family: 'Montserrat', sans-serif;
       color: var(--dark);
+      scroll-behavior: smooth;
     }
 
     .font-heading {
@@ -27,72 +32,69 @@
     }
 
     .hero-image {
-      background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('imagens/Capa.jpg');
+      background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+        url('./imagens/Capa.jpg'); /* <<< SUA FOTO */
       background-size: cover;
       background-position: center;
+      background-attachment: fixed;
       animation: fadeIn 1.5s ease-in-out;
+      position: fixed;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 30%;
+      background: linear-gradient(transparent, var(--light));
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    .gift-card {
-      transition: all 0.3s ease;
-      border: 1px solid #e5e7eb;
-      display: flex;
-      flex-direction: column;
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
     }
 
-    .gift-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    .countdown-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: var(--secondary);
+      animation: pulse 2s infinite;
     }
 
-    /* CONTAINER DA IMAGEM AJUSTADO */
-    .image-container {
-      height: 200px;
-      overflow: hidden;
+    .floating-button {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--secondary);
+      color: white;
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: #f3f4f6;
-    }
-
-    /* IMAGEM AJUSTADA PARA MOSTRAR COMPLETA */
-    .gift-image {
-      width: auto;
-      height: auto;
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-    }
-
-    .btn-primary {
-      background-color: var(--primary);
-      color: white;
-      padding: 0.75rem 1.5rem;
-      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      z-index: 100;
+      cursor: pointer;
       transition: all 0.3s ease;
     }
 
-    .btn-primary:hover {
-      background-color: #7a6349;
-      transform: translateY(-2px);
-    }
-
-    .btn-secondary {
-      background-color: var(--secondary);
-      color: white;
-      padding: 0.75rem 1.5rem;
-      border-radius: 8px;
-      transition: all 0.3s ease;
-    }
-
-    .btn-secondary:hover {
-      background-color: #bf9b2c;
-      transform: translateY(-2px);
+    .floating-button:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
     }
 
     .section-divider {
@@ -102,533 +104,894 @@
       margin: 1.5rem auto;
     }
 
-    .back-button {
-      position: fixed;
-      top: 2rem;
-      left: 2rem;
-      z-index: 50;
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
     }
 
-    /* ESTILOS PARA A CHAVE PIX */
-    .pix-key-container {
+    .gallery-item {
+      border-radius: 8px;
+      overflow: hidden;
+      height: 250px;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.03);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .timeline {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .timeline::after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      background-color: var(--accent);
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      margin-left: -3px;
+    }
+
+    .timeline-item {
+      padding: 10px 40px;
+      position: relative;
+      width: 50%;
+      box-sizing: border-box;
+    }
+
+    .timeline-item::after {
+      content: '';
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      background-color: white;
+      border: 4px solid var(--secondary);
+      border-radius: 50%;
+      top: 15px;
+      right: -13px;
+      z-index: 1;
+    }
+
+    .left {
+      left: 0;
+    }
+
+    .right {
+      left: 50%;
+    }
+
+    .left::after {
+      right: -13px;
+    }
+
+    .right::after {
+      left: -13px;
+    }
+
+    .timeline-content {
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+
+    .parallax {
+      background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('./imagens/IMG_0359.JPG');
+      min-height: 400px;
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      background-color: #f3f4f6;
-      padding: 0.75rem;
-      border-radius: 0.5rem;
-      margin-bottom: 1rem;
-      overflow: hidden;
+      justify-content: center;
     }
 
-    .pix-key-wrapper {
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.9);
+    }
+
+    .modal-content {
+      margin: auto;
+      display: block;
+      width: 80%;
+      max-width: 700px;
+      animation: zoom 0.6s;
+    }
+
+    @keyframes zoom {
+      from {transform: scale(0)}
+      to {transform: scale(1)}
+    }
+
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 35px;
+      color: #f1f1f1;
+      font-size: 40px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #bbb;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    /* Menu Mobile */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      z-index: 1000;
+      padding: 1rem;
+    }
+
+    .mobile-menu-button {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 1001;
+      background: var(--secondary);
+      color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    /* ESTILOS ADICIONADOS/MODIFICADOS PARA O FORMULÁRIO */
+    .form-input {
+      width: 100%;
+      padding: 1rem;
+      border-radius: 12px; /* Bordas mais arredondadas */
+      border: 1px solid #d1d5db;
+      transition: all 0.3s ease;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(193, 154, 107, 0.2);
+    }
+    
+    .form-textarea {
+      width: 100%;
+      padding: 1rem;
+      border-radius: 12px; /* Bordas mais arredondadas */
+      border: 1px solid #d1d5db;
+      transition: all 0.3s ease;
+    }
+    
+    .form-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(193, 154, 107, 0.2);
+    }
+    
+    .rsvp-options {
+      display: flex;
+      gap: 1rem;
+      width: 100%;
+    }
+    
+    .rsvp-option {
       flex: 1;
-      overflow-x: auto;
-      white-space: nowrap;
-      padding-right: 0.5rem;
-      scrollbar-width: thin;
+      cursor: pointer;
     }
-
-    /* Personaliza a barra de rolagem para navegadores WebKit */
-    .pix-key-wrapper::-webkit-scrollbar {
-      height: 4px;
+    
+    .rsvp-option input {
+      display: none;
     }
-
-    .pix-key-wrapper::-webkit-scrollbar-track {
-      background: #f1f1f1;
-      border-radius: 10px;
+    
+    .rsvp-option-content {
+      padding: 1.2rem 1rem;
+      border-radius: 12px; /* Bordas mais arredondadas */
+      border: 2px solid #e5e7eb;
+      background-color: white;
+      text-align: center;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
     }
-
-    .pix-key-wrapper::-webkit-scrollbar-thumb {
-      background: #c1a97a;
-      border-radius: 10px;
+    
+    .rsvp-option input:checked + .rsvp-option-content {
+      border-width: 2px;
     }
-
-    .pix-key-wrapper::-webkit-scrollbar-thumb:hover {
-      background: #a99065;
+    
+    .rsvp-yes input:checked + .rsvp-option-content {
+      border-color: #16a34a;
+      background-color: #f0fdf4;
+      color: #166534;
     }
-
-    #pixKey {
-      font-family: monospace;
-      font-size: 0.875rem;
-      color: #4b5563;
+    
+    .rsvp-no input:checked + .rsvp-option-content {
+      border-color: #dc2626;
+      background-color: #fef2f2;
+      color: #991b1b;
     }
-
-    .copy-btn {
-      color: var(--primary);
-      background: none;
+    
+    .rsvp-yes:hover .rsvp-option-content {
+      border-color: #86efac;
+    }
+    
+    .rsvp-no:hover .rsvp-option-content {
+      border-color: #fca5a5;
+    }
+    
+    .submit-button {
+      width: 100%;
+      padding: 1rem;
+      border-radius: 12px; /* Bordas mais arredondadas */
+      background-color: #16a34a;
+      color: white;
+      font-weight: 600;
       border: none;
       cursor: pointer;
-      padding: 0.5rem;
-      border-radius: 0.25rem;
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
+    }
+    
+    .submit-button:hover {
+      background-color: #15803d;
+      transform: translateY(-2px);
+    }
+    
+    /* ESTILOS DO CARROSSEL - AJUSTADOS */
+    .carousel-container {
+      display: flex;
+      transition: transform 0.5s ease;
+      height: 100%; /* Garantir que ocupe a altura do container */
     }
 
-    .copy-btn:hover {
-      color: var(--secondary);
-      background-color: rgba(0, 0, 0, 0.05);
+    .carousel-slide {
+      min-width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%; /* Garantir que ocupe a altura do container */
+      background-color: #f8f4f0;
     }
 
-    .copied-message {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: var(--primary);
-      color: white;
-      padding: 0.75rem 1.5rem;
+    .carousel-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit:  contain; /* Garantir que a imagem preencha o espaço */
       border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      z-index: 1000;
     }
 
-    .copied-message.show {
+    .carousel-btn {
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+      z-index: 10;
+    }
+
+    .carousel-btn:hover {
       opacity: 1;
+    }
+
+    .carousel-indicator.active {
+      background-color: var(--secondary) !important;
+      transform: scale(1.2);
+    }
+
+    /* Container principal do carrossel com altura controlada */
+    .carousel-wrapper {
+      position: relative;
+      max-width: 4xl;
+      margin: 0 auto;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      height: 400px; /* Altura padrão para desktop */
+    }
+
+    /* Responsividade para timeline */
+    @media screen and (max-width: 768px) {
+      .timeline::after {
+        left: 31px;
+      }
+      
+      .timeline-item {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
+      }
+      
+      .timeline-item::after {
+        left: 18px;
+      }
+      
+      .right {
+        left: 0%;
+      }
+
+      /* Ajustes de texto para mobile */
+      .hero-image h1 {
+        font-size: 2.5rem !important;
+      }
+
+      .hero-image p {
+        font-size: 1.1rem !important;
+      }
+
+      .countdown-number {
+        font-size: 1.8rem;
+      }
+
+      /* AJUSTES ESPECÍFICOS PARA O FORMULÁRIO NO MOBILE */
+      .rsvp-options {
+        flex-direction: column; /* Empilha os botões verticalmente */
+        gap: 0.75rem;
+      }
+      
+      .rsvp-option-content {
+        padding: 1rem;
+        flex-direction: row;
+        gap: 0.5rem;
+        justify-content: center;
+      }
+      
+      .form-input, .form-textarea {
+        padding: 0.875rem;
+        border-radius: 10px;
+      }
+
+      /* Ajustes na galeria */
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      }
+
+      .gallery-item {
+        height: 200px;
+      }
+
+      /* Ajustes no parallax */
+      .parallax {
+        background-attachment: scroll;
+        min-height: 300px;
+      }
+
+      /* Menu mobile */
+      .mobile-menu-button {
+        display: flex;
+      }
+
+      .mobile-menu.active {
+        display: block;
+      }
+
+      /* Ajustes no mapa */
+      .map-container {
+        height: 300px;
+      }
+
+      /* Ajustes no footer */
+      footer .flex {
+        justify-content: center;
+        gap: 1.5rem;
+      }
+
+      /* AJUSTES ESPECÍFICOS DO CARROSSEL PARA MOBILE */
+      .carousel-wrapper {
+        height: 300px; /* Altura reduzida para mobile */
+      }
+      
+      .carousel-btn {
+        width: 35px;
+        height: 35px;
+        padding: 0.4rem;
+      }
+      
+      .carousel-btn i {
+        font-size: 0.9rem;
+      }
+      
+      .carousel-indicator {
+        width: 10px;
+        height: 10px;
+      }
+    }
+
+    /* Ajustes adicionais para telas muito pequenas */
+    @media screen and (max-width: 480px) {
+      .hero-image h1 {
+        font-size: 2rem !important;
+      }
+
+      .countdown-number {
+        font-size: 1.5rem;
+      }
+
+      .section-divider {
+        width: 60px;
+      }
+
+      .floating-button {
+        width: 50px;
+        height: 50px;
+        bottom: 1rem;
+        right: 1rem;
+      }
+
+      .timeline-content {
+        padding: 15px;
+      }
+      
+      /* Ajustes finos para formulário em telas muito pequenas */
+      .rsvp-option-content {
+        padding: 0.875rem 0.5rem;
+        font-size: 0.9rem;
+      }
+      
+      .form-input, .form-textarea {
+        padding: 0.75rem;
+      }
+      
+      /* Ajustes adicionais do carrossel para telas muito pequenas */
+      .carousel-wrapper {
+        height: 250px; /* Altura ainda menor para telas pequenas */
+      }
+      
+      .carousel-btn {
+        width: 30px;
+        height: 30px;
+        padding: 0.3rem;
+      }
+    }
+
+    /* Ajustes para tablets */
+    @media screen and (min-width: 769px) and (max-width: 1024px) {
+      .carousel-wrapper {
+        height: 350px; /* Altura intermediária para tablets */
+      }
     }
   </style>
 </head>
-<body>
-  <!-- Botão Voltar -->
-  <a href="index.html" class="back-button btn-primary">
-    <i class="fas fa-arrow-left mr-2"></i> Voltar
-  </a>
 
-  <!-- Header -->
+<body class="font-body text-text">
+
+  <!-- Menu Mobile -->
+  <button class="mobile-menu-button" id="mobileMenuButton">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="flex flex-col space-y-4 p-4">
+      <a href="#countdown" class="text-lg font-medium" onclick="toggleMobileMenu()">Contagem Regressiva</a>
+      <a href="#story" class="text-lg font-medium" onclick="toggleMobileMenu()">Nossa História</a>
+      <a href="#gallery" class="text-lg font-medium" onclick="toggleMobileMenu()">Galeria</a>
+      <a href="#rsvp" class="text-lg font-medium" onclick="toggleMobileMenu()">Confirmação</a>
+      <a href="#location" class="text-lg font-medium" onclick="toggleMobileMenu()">Localização</a>
+    </div>
+  </div>
+
+  <!-- HEADER -->
   <header>
-    <div class="hero-image h-96 flex flex-col justify-center items-center text-center text-white px-4">
-      <h1 class="font-heading text-4xl md:text-5xl mb-4">Lista de Presentes</h1>
-      <p class="text-xl max-w-2xl">Sua contribuição é muito especial para nós</p>
+    <div class="hero-image h-screen flex flex-col justify-center items-center text-center text-white px-4 animate-fadeIn">
+      <h1 class="font-heading text-5xl md:text-7xl mb-4">Déborah & Pedro Vinícius</h1>
+      <p class="text-xl md:text-2xl max-w-2xl italic mb-8">"O amor não se vê com os olhos, mas com o coração."</p>
+      <div class="mt-8 bg-white text-black py-3 px-6 rounded-full shadow-lg">
+        <p class="text-2xl font-bold">22 • 11 • 2025</p>
+      </div>
+      <div class="hero-overlay"></div>
+      <a href="#countdown" class="absolute bottom-10 animate-bounce">
+        <i class="fas fa-chevron-down text-3xl text-white"></i>
+      </a>
     </div>
   </header>
 
-  <!-- Introdução -->
-  <section class="py-16 bg-white">
-    <div class="container mx-auto px-4 max-w-4xl text-center">
-      <h2 class="font-heading text-3xl md:text-4xl mb-4">Nossa Lista de Casamento</h2>
-      <div class="section-divider"></div>
-      <p class="text-lg mb-8">Cada presente é uma demonstração de carinho que nos ajudará a construir nosso lar. Se preferir, também temos opção de contribuição em dinheiro para nossa lua de mel.</p>
-      
-    </div>
-  </section>
-
-  <!-- Lista de Presentes -->
-<section class="py-16 bg-gray-50">
-    <div class="container mx-auto px-4">
-      <h2 class="font-heading text-3xl md:text-4xl text-center mb-12">Nossos Presentes Escolhidos</h2>
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
-          <div class="image-container">
-            <img src="imagens/presentes/RoupaDeCama.webp" alt="Jogo de Cama King Size" class="gift-image">
-          </div>
-          <div class="p-6">
-            <h3 class="font-heading text-xl mb-2">Jogo de Cama King Size</h3>
-            <p class="text-gray-600 mb-4">Conforto e elegância para nosso descanso</p>
-            <div class="flex justify-end">
-                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
-            </div>
-          </div>
+  <!-- COUNTDOWN SECTION -->
+  <section id="countdown" class="py-16 bg-white">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="font-heading text-3xl md:text-4xl mb-12">Contagem Regressiva</h2>
+      <div class="flex justify-center space-x-4 md:space-x-8">
+        <div class="flex flex-col items-center">
+          <div class="countdown-number" id="days">00</div>
+          <div class="text-sm mt-2">Dias</div>
         </div>
-
-        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
-          <div class="image-container">
-            <img src="imagens/presentes/Jantar.jpg" alt="Conjunto de Jantar" class="gift-image">
-          </div>
-          <div class="p-6">
-            <h3 class="font-heading text-xl mb-2">Conjunto de Jantar</h3>
-            <p class="text-gray-600 mb-4">Para nossas refeições especiais</p>
-            <div class="flex justify-end">
-                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
-            </div>
-          </div>
+        <div class="flex flex-col items-center">
+          <div class="countdown-number" id="hours">00</div>
+          <div class="text-sm mt-2">Horas</div>
         </div>
-
-        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
-          <div class="image-container">
-            <img src="imagens/presentes/airfry.webp" alt="Air Fryer" class="gift-image">
-          </div>
-          <div class="p-6">
-            <h3 class="font-heading text-xl mb-2">Air Fryer</h3>
-            <p class="text-gray-600 mb-4">Para refeições mais saudáveis</p>
-            <div class="flex justify-end">
-                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
-            </div>
-          </div>
+        <div class="flex flex-col items-center">
+          <div class="countdown-number" id="minutes">00</div>
+          <div class="text-sm mt-2">Minutos</div>
         </div>
-
-        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
-          <div class="image-container">
-            <img src="imagens/presentes/aspiradordepo.webp" alt="Robô Aspirador" class="gift-image">
-          </div>
-          <div class="p-6">
-            <h3 class="font-heading text-xl mb-2">Robô Aspirador</h3>
-            <p class="text-gray-600 mb-4">Para manter nossa casa sempre limpa</p>
-            <div class="flex justify-end">
-                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
-            </div>
-          </div>
+        <div class="flex flex-col items-center">
+          <div class="countdown-number" id="seconds">00</div>
+          <div class="text-sm mt-2">Segundos</div>
         </div>
-
-        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
-          <div class="image-container">
-            <img src="imagens/presentes/jogodepanela.webp" alt="Jogo de Panelas" class="gift-image">
-          </div>
-          <div class="p-6">
-            <h3 class="font-heading text-xl mb-2">Jogo de Panelas</h3>
-            <p class="text-gray-600 mb-4">Para nossas preparações culinárias</p>
-            <div class="flex justify-end">
-                  <!-- <a href="#" class="btn-secondary">Presentear</a> --> 
-            </div>
-          </div>
-        </div>
-
-        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
-          <div class="image-container">
-            <img src="imagens/presentes/cafeteira.webp" alt="Máquina de Café" class="gift-image">
-          </div>
-          <div class="p-6">
-            <h3 class="font-heading text-xl mb-2">Cafeteira</h3>
-            <p class="text-gray-600 mb-4">Para começar bem nossas manhãs</p>
-            <div class="flex justify-end">
-                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
-            </div>
-          </div>
-        </div>
-
-        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
-          <div class="image-container">
-            <img src="imagens/presentes/microondas.avif" alt="Forno Microondas" class="gift-image">
-          </div>
-          <div class="p-6">
-            <h3 class="font-heading text-xl mb-2">Forno Microondas</h3>
-            <p class="text-gray-600 mb-4">Praticidade no dia a dia</p>
-            <div class="flex justify-end">
-                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
-            </div>
-          </div>
-        </div>
-
-        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
-          <div class="image-container">
-            <img src="imagens/presentes/liquidificador.webp" alt="Liquidificador" class="gift-image">
-          </div>
-          <div class="p-6">
-            <h3 class="font-heading text-xl mb-2">Liquidificador</h3>
-            <p class="text-gray-600 mb-4">Para sucos e vitaminas</p>
-            <div class="flex justify-end">
-                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
-            </div>
-          </div>
-        </div>
-
-        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
-          <div class="image-container">
-            <img src="imagens/presentes/jogodetoalha.jpg" alt="Jogo de Toalhas" class="gift-image">
-          </div>
-          <div class="p-6">
-            <h3 class="font-heading text-xl mb-2">Jogo de Toalhas</h3>
-            <p class="text-gray-600 mb-4">Conforto para nosso banho</p>
-            <div class="flex justify-end">
-                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
-            </div>
-          </div>
-        </div>
-
-        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
-          <div class="image-container">
-            <img src="imagens/presentes/mesadejantar.png" alt="Varal de Roupas" class="gift-image">
-          </div>
-          <div class="p-6">
-            <h3 class="font-heading text-xl mb-2">Mesa de jantar</h3>
-            <p class="text-gray-600 mb-4">Para jantares</p>
-            <div class="flex justify-end">
-                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
-            </div>
-          </div>
-        </div>
-
-        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
-          <div class="image-container">
-            <img src="imagens/presentes/mxer.webp" alt="Ferro de Passar" class="gift-image">
-          </div>
-          <div class="p-6">
-            <h3 class="font-heading text-xl mb-2">Mixer</h3>
-            <p class="text-gray-600 mb-4">Para bater alimentos</p>
-            <div class="flex justify-end">
-                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
-            </div>
-          </div>
-        </div>
-
-        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
-          <div class="image-container">
-            <img src="imagens/presentes/aspiradordepo.webp" alt="Aspirador de Pó" class="gift-image">
-          </div>
-          <div class="p-6">
-            <h3 class="font-heading text-xl mb-2">Aspirador de Pó</h3>
-            <p class="text-gray-600 mb-4">Para limpeza completa</p>
-            <div class="flex justify-end">
-                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
-            </div>
-          </div>
-        </div>
-
-        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
-          <div class="image-container">
-            <img src="imagens/presentes/jogodetaça.webp" alt="Jogo de Taças" class="gift-image">
-          </div>
-          <div class="p-6">
-            <h3 class="font-heading text-xl mb-2">Jogo de Taças</h3>
-            <p class="text-gray-600 mb-4">Para brindes especiais</p>
-            <div class="flex justify-end">
-                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
-            </div>
-          </div>
-        </div>
-
-        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
-          <div class="image-container">
-            <img src="imagens/presentes/cooktop.webp" alt="Cooktop" class="gift-image">
-          </div>
-          <div class="p-6">
-            <h3 class="font-heading text-xl mb-2">Cooktop</h3>
-            <p class="text-gray-600 mb-4">Para preparar deliciosas refeições</p>
-            <div class="flex justify-end">
-                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
-            </div>
-          </div>
-        </div>
-
-        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
-          <div class="image-container">
-            <img src="imagens/presentes/processador.jpg" alt="Processador de Alimentos" class="gift-image">
-          </div>
-          <div class="p-6">
-            <h3 class="font-heading text-xl mb-2">Processador de Alimentos</h3>
-            <p class="text-gray-600 mb-4">Facilidade na cozinha</p>
-            <div class="flex justify-end">
-                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
-            </div>
-          </div>
-        </div>
-
-        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
-          <div class="image-container">
-            <img src="imagens/presentes/edredon.webp" alt="Edredom" class="gift-image">
-          </div>
-          <div class="p-6">
-            <h3 class="font-heading text-xl mb-2">Edredom</h3>
-            <p class="text-gray-600 mb-4">Conforto para noites frescas</p>
-            <div class="flex justify-end">
-                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
-            </div>
-          </div>
-        </div>
-
-        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
-          <div class="image-container">
-            <img src="imagens/presentes/Faqueiro.jpg" alt="Faqueiro" class="gift-image">
-          </div>
-          <div class="p-6">
-            <h3 class="font-heading text-xl mb-2">Faqueiro</h3>
-            <p class="text-gray-600 mb-4">Para nossas refeições</p>
-            <div class="flex justify-end">
-                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
-            </div>
-          </div>
-        </div>
-
-        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
-          <div class="image-container">
-            <img src="imagens/presentes/sanduicheira.jpg" alt="Sanduicheira" class="gift-image">
-          </div>
-          <div class="p-6">
-            <h3 class="font-heading text-xl mb-2">Sanduicheira</h3>
-            <p class="text-gray-600 mb-4">Para lanches rápidos</p>
-            <div class="flex justify-end">
-                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
-            </div>
-          </div>
-        </div>
-
-        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
-          <div class="image-container">
-            <img src="imagens/presentes/chaleira.jpg" alt="Chaleira Elétrica" class="gift-image">
-          </div>
-          <div class="p-6">
-            <h3 class="font-heading text-xl mb-2">Chaleira Elétrica</h3>
-            <p class="text-gray-600 mb-4">Para chás e cafés</p>
-            <div class="flex justify-end">
-                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
-            </div>
-          </div>
-        </div>
-
-        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
-          <div class="image-container">
-            <img src="imagens/presentes/sofa.png" alt="Sofá" class="gift-image">
-          </div>
-          <div class="p-6">
-            <h3 class="font-heading text-xl mb-2">Sofá</h3>
-            <p class="text-gray-600 mb-4">Para sala de estar</p>
-            <div class="flex justify-end">
-                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
-            </div>
-          </div>
-        </div>
-        
-        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
-          <div class="image-container">
-            <img src="imagens/presentes/tanquinho.webp" alt="Tanquinho de lavar roupas" class="gift-image">
-          </div>
-          <div class="p-6">
-            <h3 class="font-heading text-xl mb-2">Tanquinho de lavar roupas</h3>
-            <p class="text-gray-600 mb-4">Para uma lavagem rápida e eficiente</p>
-            <div class="flex justify-end">
-                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
-            </div>
-          </div>
-        </div>
-        
-        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
-          <div class="image-container">
-            <img src="imagens/presentes/lavalouças.webp" alt="Lava Louças" class="gift-image">
-          </div>
-          <div class="p-6">
-            <h3 class="font-heading text-xl mb-2">Lava Louças</h3>
-            <p class="text-gray-600 mb-4">Praticidade na hora de lavar a louça</p>
-            <div class="flex justify-end">
-                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
-            </div>
-          </div>
-        </div>
-
-        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
-          <div class="image-container">
-            <img src="imagens/presentes/batedeira.webp" alt="Batedeira" class="gift-image">
-          </div>
-          <div class="p-6">
-            <h3 class="font-heading text-xl mb-2">Batedeira</h3>
-            <p class="text-gray-600 mb-4">Para bolos e massas deliciosas</p>
-            <div class="flex justify-end">
-                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
-            </div>
-          </div>
-        </div>
-
-        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
-          <div class="image-container">
-            <img src="imagens/presentes/forno.webp" alt="Forno" class="gift-image">
-          </div>
-          <div class="p-6">
-            <h3 class="font-heading text-xl mb-2">Forno</h3>
-            <p class="text-gray-600 mb-4">Para assar e gratinar</p>
-            <div class="flex justify-end">
-                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
-            </div>
-          </div>
-        </div>
-
-        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
-          <div class="image-container">
-            <img src="imagens/presentes/panelaeletrica.webp" alt="Panela Elétrica" class="gift-image">
-          </div>
-          <div class="p-6">
-            <h3 class="font-heading text-xl mb-2">Panela Elétrica</h3>
-            <p class="text-gray-600 mb-4">Cozinhe com mais facilidade</p>
-            <div class="flex justify-end">
-                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
   </section>
 
-  <!-- Opção de PIX -->
-  <section class="py-16 bg-white">
-    <div class="container mx-auto px-4 max-w-4xl">
-      <div class="bg-gradient-to-r from-amber-100 to-amber-50 rounded-2xl p-8 md:p-12 shadow-lg">
-        <h2 class="font-heading text-3xl md:text-4xl text-center mb-6">Contribuição via PIX</h2>
-        <p class="text-center text-lg mb-8">Se preferir nos presentear com uma contribuição em dinheiro para nossa lua de mel, utilize nossa chave PIX:</p>
+  <!-- OUR STORY SECTION -->
+  <section id="story" class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4 max-w-5xl">
+        <h2 class="font-heading text-3xl md:text-4xl text-center mb-4">Nossa História</h2>
+        <div class="section-divider"></div>
+        <p class="text-center max-w-3xl mx-auto mb-12">Uma jornada abençoada por Deus, rumo ao altar do matrimônio.</p>
         
-        <div class="bg-white p-6 rounded-xl shadow-md max-w-md mx-auto">
-          <div class="text-center mb-6">
-            <div class="bg-gray-100 p-4 rounded-lg inline-block">
-              <img src="imagens/PIX.jpg" alt="QR Code PIX" class="w-48 h-48 mx-auto">
+        <div class="timeline">
+            <!-- Primeiro Marco -->
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <div class="flex items-center mb-2">
+                        <div class="bg-secondary rounded-full p-2 mr-3">
+                            <i class="fas fa-heart text-white"></i>
+                        </div>
+                        <h3 class="font-heading text-xl">Pedido de Namoro</h3>
+                    </div>
+                    <p class="text-sm text-gray-500 mb-3">14 de Julho, 2022</p>
+                    <p class="text-gray-700">Iniciamos nosso relacionamento com a bênção de Deus, buscando sempre honrá-Lo em nossa caminhada.</p>
+                </div>
             </div>
-          </div>
-          
-          <div class="mb-6">
-            <h3 class="font-semibold mb-2">Chave PIX copia e cola:</h3>
-            <div class="pix-key-container">
-              <div class="pix-key-wrapper">
-                <span id="pixKey">00020126360014BR.GOV.BCB.PIX0114+55669992196385204000053039865802BR5925PEDRO VINICIUS MENEZES DE6015SANTA RITA DO A62070503***6304C0E7</span>
-              </div>
-              <button onclick="copyPixKey()" class="copy-btn" title="Copiar chave PIX">
-                <i class="fas fa-copy"></i>
-              </button>
-            </div>
-          </div>
-          
-          <div class="text-center">
-            <p class="text-sm text-gray-600 mb-4">Ao realizar a transferência, adicione seu nome no campo de mensagem para que possamos agradecer!</p>
             
-          </div>
+            <!-- Segundo Marco -->
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <div class="flex items-center mb-2">
+                        <div class="bg-secondary rounded-full p-2 mr-3">
+                            <i class="fas fa-pray text-white"></i>
+                        </div>
+                        <h3 class="font-heading text-xl">Decisão pelo Casamento</h3>
+                    </div>
+                    <p class="text-sm text-gray-500 mb-3">Início de 2025</p>
+                    <p class="text-gray-700">Após muito oração e conselhos sábios, decidimos dar o passo para o matrimônio.</p>
+                </div>
+            </div>
+            
+            <!-- Terceiro Marco -->
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <div class="flex items-center mb-2">
+                        <div class="bg-secondary rounded-full p-2 mr-3">
+                            <i class="fas fa-gem text-white"></i>
+                        </div>
+                        <h3 class="font-heading text-xl">Pedido de Casamento</h3>
+                    </div>
+                    <p class="text-sm text-gray-500 mb-3">11 de Julho, 2025</p>
+                    <p class="text-gray-700">Um momento especial onde confirmamos diante de Deus nosso desejo de nos unir em matrimônio.</p>
+                </div>
+            </div>
+            
+            <!-- Quarto Marco -->
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <div class="flex items-center mb-2">
+                        <div class="bg-secondary rounded-full p-2 mr-3">
+                            <i class="fas fa-church text-white"></i>
+                        </div>
+                        <h3 class="font-heading text-xl">Nosso Casamento</h3>
+                    </div>
+                    <p class="text-sm text-gray-500 mb-3">22 de Novembro, 2025</p>
+                    <p class="text-gray-700">O dia em que nos tornaremos uma só carne, diante de Deus, família e amigos.</p>
+                </div>
+            </div>
         </div>
-      </div>
+        
+        <!-- Versículo bíblico -->
+        <div class="mt-16 bg-white rounded-xl p-8 shadow-lg text-center">
+            <h3 class="font-heading text-2xl mb-6">Nossa Base</h3>
+            <p class="text-lg italic text-gray-700 mb-4">"Portanto, o que Deus uniu, não o separe o homem."</p>
+            <p class="text-gray-600">Marcos 10:9</p>
+        </div>
     </div>
   </section>
-
-  <!-- Agradecimento -->
-  <section class="py-16 bg-gray-50">
-    <div class="container mx-auto px-4 max-w-3xl text-center">
-      <h2 class="font-heading text-3xl md:text-4xl mb-6">Agradecemos de Coração</h2>
-      <p class="text-lg mb-8">Mais importante que qualquer presente, é ter você ao nosso lado nesse dia tão especial. Sua presença é o maior presente que poderíamos receber!</p>
+  
+<!-- GALLERY SECTION -->
+<!-- GALLERY SECTION -->
+<section id="gallery" class="py-16 bg-white">
+  <div class="container mx-auto px-4">
+    <h2 class="font-heading text-3xl md:text-4xl text-center mb-4">Nossos Momentos</h2>
+    <div class="section-divider"></div>
+    
+    <!-- Carrossel Container - MODIFICADO PARA MODO RETRATO -->
+    <div class="carousel-wrapper" style="max-width: 400px; height: 550px;">
+      <div class="carousel-container h-full" id="carousel">
+        <!-- Suas imagens (substitua com suas fotos reais) -->
+        <div class="carousel-slide">
+          <img src="imagens/FOTO1.jpg" alt="Noivos 1">
+        </div>
+        <div class="carousel-slide">
+          <img src="imagens/Foto2.jpg" alt="Noivos 2">
+        </div>
+        <div class="carousel-slide">
+          <img src="imagens/FOTO 3.jpg" alt="Noivos 3">
+        </div>
+        <div class="carousel-slide">
+          <img src="imagens/FOTO4.jpg" alt="Noivos 4">
+        </div>
+      </div>
       
-      <div class="bg-white p-8 rounded-xl shadow-md">
-        <div class="text-5xl text-amber-400 mb-4">
-          <i class="fas fa-heart"></i>
-        </div>
-        <p class="font-heading text-2xl text-primary">Déborah & Pedro Vinícius</p>
+      <!-- Botões de navegação -->
+      <button class="carousel-btn carousel-prev absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/80 rounded-full p-2 shadow-md">
+        <i class="fas fa-chevron-left text-primary"></i>
+      </button>
+      <button class="carousel-btn carousel-next absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/80 rounded-full p-2 shadow-md">
+        <i class="fas fa-chevron-right text-primary"></i>
+      </button>
+      
+      <!-- Indicadores -->
+      <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        <div class="carousel-indicator w-3 h-3 rounded-full bg-white/60 cursor-pointer transition-all"></div>
+        <div class="carousel-indicator w-3 h-3 rounded-full bg-white/60 cursor-pointer transition-all"></div>
+        <div class="carousel-indicator w-3 h-3 rounded-full bg-white/60 cursor-pointer transition-all"></div>
+        <div class="carousel-indicator w-3 h-3 rounded-full bg-white/60 cursor-pointer transition-all"></div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Footer -->
+  <!-- PARALLAX SECTION -->
+  <div class="parallax">
+    <div class="text-center text-white">
+      <h2 class="font-heading text-4xl md:text-5xl mb-4">Um Convite Especial</h2>
+      <p class="text-xl max-w-2xl mx-auto">Sua presença é o melhor presente que poderíamos receber</p>
+    </div>
+  </div>
+
+  <main class="container mx-auto px-4 py-12 max-w-6xl">
+    <!-- RSVP Section -->
+    <section id="rsvp" class="mb-20">
+      <h2 class="font-heading text-3xl md:text-4xl text-center mb-4">Confirmação de Presença</h2>
+      <div class="section-divider"></div>
+      <p class="text-center max-w-3xl mx-auto mb-12">Por favor, confirme sua presença até 10 de Novembro de 2025</p>
+      
+      <div class="bg-white rounded-xl p-8 max-w-2xl mx-auto shadow-xl">
+        <form id="rsvpForm" class="space-y-6">
+          <div>
+            <label for="name" class="block mb-2 font-semibold">Nome Completo</label>
+            <input type="text" id="name" required class="form-input">
+          </div>
+          <div>
+            <label for="contact" class="block mb-2 font-semibold">Email ou Telefone</label>
+            <input type="text" id="contact" required class="form-input">
+          </div>
+          <div>
+            <p class="mb-2 font-semibold text-lg">📅 Confirmar presença</p>
+            <div class="rsvp-options">
+              <!-- Botão SIM -->
+              <label class="rsvp-option rsvp-yes">
+                <input type="radio" name="attending" value="yes" checked>
+                <div class="rsvp-option-content">
+                  <span class="text-2xl">✔</span>
+                  <span>Sim, estarei presente</span>
+                </div>
+              </label>
+              <!-- Botão NÃO -->
+              <label class="rsvp-option rsvp-no">
+                <input type="radio" name="attending" value="no">
+                <div class="rsvp-option-content">
+                  <span class="text-2xl">✖</span>
+                  <span>Não estarei presente</span>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div>
+            <label for="message" class="block mb-2 font-semibold">Mensagem para os noivos (opcional)</label>
+            <textarea id="message" rows="4" class="form-textarea"></textarea>
+          </div>
+          <button type="submit" class="submit-button">
+            Enviar Confirmação
+          </button>
+        </form>
+
+        <!-- Mensagem de Agradecimento -->
+        <div id="thankYouMessage" class="hidden text-center py-8 animate-fadeIn">
+          <div class="text-green-600 text-5xl mb-4">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <h3 class="font-heading text-2xl mb-4">🎉 Obrigado pela sua confirmação!</h3>
+          <p class="mb-4">Sua resposta foi registrada com sucesso.</p>
+          <p class="text-sm text-gray-600">Te esperamos no nosso grande dia!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Location Section -->
+    <section id="location" class="mb-20">
+      <h2 class="font-heading text-3xl md:text-4xl text-center mb-4">Localização</h2>
+      <div class="section-divider"></div>
+      <p class="text-center max-w-3xl mx-auto mb-12">Cerimônia e recepção no mesmo local</p>
+      
+      <div class="grid md:grid-cols-2 gap-8 items-center">
+          <h3 class="text-xl font-medium mb-4">Cerimônia e Recepção</h3>
+          <div class="space-y-2 mb-6">
+            <p class="flex items-center"><i class="fas fa-church mr-3 text-primary"></i>Igreja Assembleia de Deus Missão</p>
+            <p class="flex items-center"><i class="fas fa-map-marker-alt mr-3 text-primary"></i>Rua Triangulo, N 166</p>
+            <p class="flex items-center"><i class="fas fa-map-pin mr-3 text-primary"></i>Centro, Santa Helena de Goiás- Go</p>
+            <p class="flex items-center"><i class="fas fa-clock mr-3 text-primary"></i><strong>Horário:</strong> 19h</p>
+          </div>
+         <a href="presente.html" class="inline-flex items-center text-accent font-semibold hover:text-primary transition">
+  <i class="fas fa-gift mr-2"></i> Ver lista de presentes
+</a>
+        </div>
+        <div class="h-96 bg-gray-200 rounded-xl overflow-hidden shadow-lg map-container">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3798.472305065731!2d-50.600201825700815!3d-17.81648077598753!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x93602a2812c00001%3A0xce975fcf3508a90c!2sAssembleia%20de%20Deus%20Santa%20Helena!5e0!3m2!1spt-BR!2sbr!4v1757559717923!5m2!1spt-BR!2sbr" 
+            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" class="rounded-lg">
+          </iframe>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Floating Action Button -->
+  <div class="floating-button" onclick="scrollToRSVP()">
+    <i class="fas fa-check-circle text-2xl"></i>
+  </div>
+
+  <!-- Image Modal -->
+  <div id="imageModal" class="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="modalImage">
+  </div>
+
   <footer class="bg-gray-100 py-12">
     <div class="container mx-auto px-4 text-center">
       <h3 class="font-heading text-2xl mb-4">Déborah & Pedro Vinícius</h3>
       <p class="mb-6">22 de Novembro de 2025</p>
+      
       <p>© 2025 Débora & Pedro. Todos os direitos reservados.</p>
     </div>
   </footer>
 
-  <!-- Mensagem de cópia bem-sucedida -->
-  <div id="copiedMessage" class="copied-message">
-    Chave PIX copiada para a área de transferência!
-  </div>
-
+  <!-- SCRIPT -->
+    <!-- SCRIPT -->
   <script>
-    function copyPixKey() {
-      const pixKey = document.getElementById('pixKey').innerText;
-      navigator.clipboard.writeText(pixKey).then(() => {
-        // Mostrar mensagem de sucesso
-        const message = document.getElementById('copiedMessage');
-        message.classList.add('show');
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('rsvpForm');
+      const thankYou = document.getElementById('thankYouMessage');
+
+      // Configurar contagem regressiva
+      function updateCountdown() {
+        const weddingDate = new Date('November 22, 2025 19:00:00').getTime();
+        const now = new Date().getTime();
+        const distance = weddingDate - now;
         
-        // Esconder a mensagem após 3 segundos
-        setTimeout(() => {
-          message.classList.remove('show');
-        }, 3000);
-      }).catch(err => {
-        console.error('Erro ao copiar a chave PIX: ', err);
-        alert('Não foi possível copiar a chave PIX. Tente novamente.');
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        
+        document.getElementById("days").innerText = days.toString().padStart(2, '0');
+        document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+        document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+        document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+      }
+      
+      setInterval(updateCountdown, 1000);
+      updateCountdown(); // Initial call
+
+      // Form submission
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        form.classList.add('hidden');
+        thankYou.classList.remove('hidden');
+        form.reset();
       });
-    }
+
+      // Mobile menu toggle
+      window.toggleMobileMenu = function() {
+        const menu = document.getElementById('mobileMenu');
+        menu.classList.toggle('active');
+      }
+
+      document.getElementById('mobileMenuButton').addEventListener('click', toggleMobileMenu);
+
+      // Scroll to RSVP function
+      window.scrollToRSVP = function() {
+        document.getElementById('rsvp').scrollIntoView({ behavior: 'smooth' });
+      }
+
+      // Modal functionality
+      window.openModal = function(img) {
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        modal.style.display = "block";
+        modalImg.src = img.src;
+      }
+
+      window.closeModal = function() {
+        document.getElementById('imageModal').style.display = "none";
+      }
+
+      // Close modal when clicking outside
+      window.onclick = function(event) {
+        const modal = document.getElementById('imageModal');
+        if (event.target == modal) {
+          closeModal();
+        }
+      }
+
+      // Carousel functionality
+      const carousel = document.getElementById('carousel');
+      const slides = document.querySelectorAll('.carousel-slide');
+      const indicators = document.querySelectorAll('.carousel-indicator');
+      let currentSlide = 0;
+
+      function updateCarousel() {
+        carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+        
+        // Update indicators
+        indicators.forEach((indicator, index) => {
+          if (index === currentSlide) {
+            indicator.classList.add('active');
+            indicator.style.backgroundColor = '#D4AF37';
+          } else {
+            indicator.classList.remove('active');
+            indicator.style.backgroundColor = 'rgba(255, 255, 255, 0.6)';
+          }
+        });
+      }
+
+      // Next slide
+      document.querySelector('.carousel-next').addEventListener('click', () => {
+        currentSlide = (currentSlide + 1) % slides.length;
+        updateCarousel();
+      });
+
+      // Previous slide
+      document.querySelector('.carousel-prev').addEventListener('click', () => {
+        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+        updateCarousel();
+      });
+
+      // Auto-advance slides
+      setInterval(() => {
+        currentSlide = (currentSlide + 1) % slides.length;
+        updateCarousel();
+      }, 5000);
+
+      // Initialize carousel
+      updateCarousel();
+
+      // Add click events to indicators
+      indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+          currentSlide = index;
+          updateCarousel();
+        });
+      });
+    });
   </script>
 </body>
 </html>
