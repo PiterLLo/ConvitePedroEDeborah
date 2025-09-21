@@ -36,19 +36,9 @@
         url('./imagens/Capa.jpg'); /* <<< SUA FOTO */
       background-size: cover;
       background-position: center;
-      /* Removido background-attachment: fixed para mobile */
+      background-attachment: fixed;
       animation: fadeIn 1.5s ease-in-out;
-      position: relative; /* Alterado de fixed para relative */
-      height: 100vh;
-      width: 100%;
-    }
-
-    /* Adicionado media query para desktop */
-    @media (min-width: 769px) {
-      .hero-image {
-        background-attachment: fixed;
-        position: fixed;
-      }
+      position: fixed;
     }
 
     .hero-overlay {
@@ -613,7 +603,7 @@
 
   <!-- HEADER -->
   <header>
-    <div class="hero-image flex flex-col justify-center items-center text-center text-white px-4 animate-fadeIn">
+    <div class="hero-image h-screen flex flex-col justify-center items-center text-center text-white px-4 animate-fadeIn">
       <h1 class="font-heading text-5xl md:text-7xl mb-4">Déborah & Pedro Vinícius</h1>
       <p class="text-xl md:text-2xl max-w-2xl italic mb-8">"O amor não se vê com os olhos, mas com o coração."</p>
       <div class="mt-8 bg-white text-black py-3 px-6 rounded-full shadow-lg">
@@ -725,6 +715,7 @@
     </div>
   </section>
   
+<!-- GALLERY SECTION -->
 <!-- GALLERY SECTION -->
 <section id="gallery" class="py-16 bg-white">
   <div class="container mx-auto px-4">
@@ -884,6 +875,7 @@
   </footer>
 
   <!-- SCRIPT -->
+    <!-- SCRIPT -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const form = document.getElementById('rsvpForm');
