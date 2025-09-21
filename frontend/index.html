@@ -38,7 +38,7 @@
       background-position: center;
       background-attachment: fixed;
       animation: fadeIn 1.5s ease-in-out;
-      position: fixed;
+      position: static;
     }
 
     .hero-overlay {
@@ -385,13 +385,12 @@
       justify-content: center;
       align-items: center;
       height: 100%; /* Garantir que ocupe a altura do container */
-      background-color: #f8f4f0;
     }
 
     .carousel-slide img {
       width: 100%;
       height: 100%;
-      object-fit:  contain; /* Garantir que a imagem preencha o espaço */
+      object-fit: cover; /* Garantir que a imagem preencha o espaço */
       border-radius: 8px;
     }
 
@@ -733,10 +732,10 @@
           <img src="imagens/Foto2.jpg" alt="Noivos 2">
         </div>
         <div class="carousel-slide">
-          <img src="imagens/FOTO 3.jpg" alt="Noivos 3">
+          <img src="imagens/IMG_0359.JPG" alt="Noivos 3">
         </div>
         <div class="carousel-slide">
-          <img src="imagens/FOTO4.jpg" alt="Noivos 4">
+          <img src="" alt="Noivos 4">
         </div>
       </div>
       
@@ -758,6 +757,88 @@
     </div>
   </div>
 </section>
+
+<style>
+  /* ESTILOS DO CARROSSEL - AJUSTADOS PARA MODO RETRATO */
+  .carousel-container {
+    display: flex;
+    transition: transform 0.5s ease;
+    height: 100%;
+  }
+
+  .carousel-slide {
+    min-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  .carousel-slide img {
+    max-width: 85%;
+    max-height: 85%;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .carousel-btn {
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .carousel-btn:hover {
+    opacity: 1;
+  }
+
+  .carousel-indicator.active {
+    background-color: var(--secondary) !important;
+    transform: scale(1.2);
+  }
+
+  /* Container principal do carrossel com proporção retrato */
+  .carousel-wrapper {
+    position: relative;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    background-color: #f8f4f0;
+    max-width: 400px;
+    height: 550px;
+  }
+
+  /* Ajustes responsivos */
+  @media screen and (max-width: 768px) {
+    .carousel-wrapper {
+      height: 450px;
+      max-width: 320px;
+    }
+    
+    .carousel-btn {
+      width: 35px;
+      height: 35px;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .carousel-wrapper {
+      height: 380px;
+      max-width: 280px;
+    }
+    
+    .carousel-slide img {
+      max-width: 90%;
+      max-height: 90%;
+    }
+  }
+</style>
 
   <!-- PARALLAX SECTION -->
   <div class="parallax">
@@ -841,9 +922,9 @@
             <p class="flex items-center"><i class="fas fa-map-pin mr-3 text-primary"></i>Centro, Santa Helena de Goiás- Go</p>
             <p class="flex items-center"><i class="fas fa-clock mr-3 text-primary"></i><strong>Horário:</strong> 19h</p>
           </div>
-         <a href="presente.html" class="inline-flex items-center text-accent font-semibold hover:text-primary transition">
-  <i class="fas fa-gift mr-2"></i> Ver lista de presentes
-</a>
+          <a href="#" class="inline-flex items-center text-accent font-semibold hover:text-primary transition">
+            <i class="fas fa-gift mr-2"></i> Ver lista de presentes
+          </a>
         </div>
         <div class="h-96 bg-gray-200 rounded-xl overflow-hidden shadow-lg map-container">
           <iframe
