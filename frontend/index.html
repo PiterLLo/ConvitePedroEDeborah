@@ -41,6 +41,14 @@
       position: static;
     }
 
+    /* NOVO: Garantir que a imagem de capa seja totalmente visível */
+    @media screen and (max-width: 768px) {
+      .hero-image {
+        background-attachment: scroll;
+        background-position: center 30%;
+      }
+    }
+
     .hero-overlay {
       position: absolute;
       bottom: 0;
@@ -580,6 +588,19 @@
         height: 350px; /* Altura intermediária para tablets */
       }
     }
+
+    /* NOVO: Estilos para garantir que a imagem de capa seja totalmente visível */
+    @media screen and (max-width: 768px) and (orientation: portrait) {
+      .hero-image {
+        background-position: center 25%;
+      }
+    }
+    
+    @media screen and (max-width: 768px) and (orientation: landscape) {
+      .hero-image {
+        background-position: center 35%;
+      }
+    }
   </style>
 </head>
 
@@ -597,6 +618,8 @@
       <a href="#gallery" class="text-lg font-medium" onclick="toggleMobileMenu()">Galeria</a>
       <a href="#rsvp" class="text-lg font-medium" onclick="toggleMobileMenu()">Confirmação</a>
       <a href="#location" class="text-lg font-medium" onclick="toggleMobileMenu()">Localização</a>
+      <!-- NOVO: Link para página de presentes no menu mobile -->
+      <a href="presente.html" class="text-lg font-medium" onclick="toggleMobileMenu()">Lista de Presentes</a>
     </div>
   </div>
 
@@ -715,7 +738,6 @@
   </section>
   
 <!-- GALLERY SECTION -->
-<!-- GALLERY SECTION -->
 <section id="gallery" class="py-16 bg-white">
   <div class="container mx-auto px-4">
     <h2 class="font-heading text-3xl md:text-4xl text-center mb-4">Nossos Momentos</h2>
@@ -757,88 +779,6 @@
     </div>
   </div>
 </section>
-
-<style>
-  /* ESTILOS DO CARROSSEL - AJUSTADOS PARA MODO RETRATO */
-  .carousel-container {
-    display: flex;
-    transition: transform 0.5s ease;
-    height: 100%;
-  }
-
-  .carousel-slide {
-    min-width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-  }
-
-  .carousel-slide img {
-    max-width: 85%;
-    max-height: 85%;
-    object-fit: contain;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  }
-
-  .carousel-btn {
-    opacity: 0.7;
-    transition: opacity 0.3s ease;
-    z-index: 10;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .carousel-btn:hover {
-    opacity: 1;
-  }
-
-  .carousel-indicator.active {
-    background-color: var(--secondary) !important;
-    transform: scale(1.2);
-  }
-
-  /* Container principal do carrossel com proporção retrato */
-  .carousel-wrapper {
-    position: relative;
-    margin: 0 auto;
-    overflow: hidden;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    background-color: #f8f4f0;
-    max-width: 400px;
-    height: 550px;
-  }
-
-  /* Ajustes responsivos */
-  @media screen and (max-width: 768px) {
-    .carousel-wrapper {
-      height: 450px;
-      max-width: 320px;
-    }
-    
-    .carousel-btn {
-      width: 35px;
-      height: 35px;
-    }
-  }
-
-  @media screen and (max-width: 480px) {
-    .carousel-wrapper {
-      height: 380px;
-      max-width: 280px;
-    }
-    
-    .carousel-slide img {
-      max-width: 90%;
-      max-height: 90%;
-    }
-  }
-</style>
 
   <!-- PARALLAX SECTION -->
   <div class="parallax">
@@ -922,7 +862,8 @@
             <p class="flex items-center"><i class="fas fa-map-pin mr-3 text-primary"></i>Centro, Santa Helena de Goiás- Go</p>
             <p class="flex items-center"><i class="fas fa-clock mr-3 text-primary"></i><strong>Horário:</strong> 19h</p>
           </div>
-          <a href="#" class="inline-flex items-center text-accent font-semibold hover:text-primary transition">
+          <!-- NOVO: Link para página de presentes -->
+          <a href="presente.html" class="inline-flex items-center text-accent font-semibold hover:text-primary transition">
             <i class="fas fa-gift mr-2"></i> Ver lista de presentes
           </a>
         </div>
@@ -957,7 +898,6 @@
   </footer>
 
   <!-- SCRIPT -->
-    <!-- SCRIPT -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const form = document.getElementById('rsvpForm');
@@ -1073,6 +1013,24 @@
           updateCarousel();
         });
       });
+
+      // NOVO: Ajustar a imagem de capa para mobile
+      function adjustHeroImage() {
+        const hero = document.querySelector('.hero-image');
+        if (window.innerWidth <= 768) {
+          // Para mobile, garantir que a imagem seja totalmente visível
+          hero.style.backgroundSize = 'cover';
+          hero.style.backgroundPosition = 'center 30%';
+        } else {
+          // Para desktop, manter o comportamento original
+          hero.style.backgroundSize = 'cover';
+          hero.style.backgroundPosition = 'center';
+        }
+      }
+
+      // Executar no carregamento e no redimensionamento da tela
+      adjustHeroImage();
+      window.addEventListener('resize', adjustHeroImage);
     });
   </script>
 </body>
