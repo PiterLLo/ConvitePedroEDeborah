@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Respostas RSVP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .center {
+            text-align: center;
+        }
+        .sim {
+            color: green;
+            font-weight: bold;
+        }
+        .nao {
+            color: red;
+            font-weight: bold;
+        }
+        .totais {
+            margin-top: 15px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Confirmações de Presença</h1>
+    <div class="totais" id="totais">Carregando totais...</div>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nome</th>
+                <th>Contato</th>
+                <th>Presença</th>
+            </tr>
+        </thead>
+        <tbody id="rsvp-list">
+            <tr>
+                <td colspan="4" class="center">Carregando...</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        async function carregarRSVP() {
+            const tbody = document.getElementById('rsvp-list');
+            const totaisDiv = document.getElementById('totais');
+            try {
+                const response = await fetch('/api/rsvp');
+                const dados = await response.json();
+
+                tbody.innerHTML = '';
+
+                if (!dados.length) {
+                    tbody.innerHTML = '<tr><td colspan="4" class="center">Nenhuma confirmação ainda</td></tr>';
+                    totaisDiv.textContent = "Nenhum participante confirmado.";
+                    return;
+                }
+
+                let countSim = 0;
+                let countNao = 0;
+
+                dados.forEach((rsvp, index) => {
+                    if (rsvp.attending === "yes") countSim++;
+                    if (rsvp.attending === "no") countNao++;
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${rsvp.name}</td>
+                        <td>${rsvp.contact}</td>
+                        <td class="${rsvp.attending === 'yes' ? 'sim' : 'nao'}">
+                            ${rsvp.attending === 'yes' ? '✔ Vai' : '✖ Não vai'}
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                totaisDiv.textContent = `✅ Confirmados: ${countSim} | ❌ Não irão: ${countNao} | 📋 Total de respostas: ${dados.length}`;
+            } catch (err) {
+                console.error('Erro ao carregar RSVP:', err);
+                tbody.innerHTML = '<tr><td colspan="4" class="center">Erro ao carregar dados</td></tr>';
+                totaisDiv.textContent = "Erro ao carregar totais.";
+            }
+        }
+
+        // Carrega os dados ao abrir a página
+        carregarRSVP();
+
+        // Atualiza a cada 10 segundos
+        setInterval(carregarRSVP, 10000);
+    </script>
+</body>
+</html>
