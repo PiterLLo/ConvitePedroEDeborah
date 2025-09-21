@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Presentes | Déborah & Pedro Vinícius</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #8B7355;
+      --secondary: #D4AF37;
+      --accent: #C19A6B;
+      --light: #F8F4F0;
+      --dark: #3C2F2F;
+    }
+
+    body {
+      background-color: var(--light);
+      font-family: 'Montserrat', sans-serif;
+      color: var(--dark);
+    }
+
+    .font-heading {
+      font-family: 'Playfair Display', serif;
+    }
+
+    .hero-image {
+      background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('imagens/Capa.jpg');
+      background-size: cover;
+      background-position: center;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .gift-card {
+      transition: all 0.3s ease;
+      border: 1px solid #e5e7eb;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .gift-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    /* CONTAINER DA IMAGEM AJUSTADO */
+    .image-container {
+      height: 200px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f3f4f6;
+    }
+
+    /* IMAGEM AJUSTADA PARA MOSTRAR COMPLETA */
+    .gift-image {
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #7a6349;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background-color: var(--secondary);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+      background-color: #bf9b2c;
+      transform: translateY(-2px);
+    }
+
+    .section-divider {
+      width: 80px;
+      height: 3px;
+      background: var(--secondary);
+      margin: 1.5rem auto;
+    }
+
+    .back-button {
+      position: fixed;
+      top: 2rem;
+      left: 2rem;
+      z-index: 50;
+    }
+
+    /* ESTILOS PARA A CHAVE PIX */
+    .pix-key-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #f3f4f6;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+
+    .pix-key-wrapper {
+      flex: 1;
+      overflow-x: auto;
+      white-space: nowrap;
+      padding-right: 0.5rem;
+      scrollbar-width: thin;
+    }
+
+    /* Personaliza a barra de rolagem para navegadores WebKit */
+    .pix-key-wrapper::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .pix-key-wrapper::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+
+    .pix-key-wrapper::-webkit-scrollbar-thumb {
+      background: #c1a97a;
+      border-radius: 10px;
+    }
+
+    .pix-key-wrapper::-webkit-scrollbar-thumb:hover {
+      background: #a99065;
+    }
+
+    #pixKey {
+      font-family: monospace;
+      font-size: 0.875rem;
+      color: #4b5563;
+    }
+
+    .copy-btn {
+      color: var(--primary);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 0.25rem;
+      transition: all 0.2s ease;
+    }
+
+    .copy-btn:hover {
+      color: var(--secondary);
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .copied-message {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--primary);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+    }
+
+    .copied-message.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <!-- Botão Voltar -->
+  <a href="index.html" class="back-button btn-primary">
+    <i class="fas fa-arrow-left mr-2"></i> Voltar
+  </a>
+
+  <!-- Header -->
+  <header>
+    <div class="hero-image h-96 flex flex-col justify-center items-center text-center text-white px-4">
+      <h1 class="font-heading text-4xl md:text-5xl mb-4">Lista de Presentes</h1>
+      <p class="text-xl max-w-2xl">Sua contribuição é muito especial para nós</p>
+    </div>
+  </header>
+
+  <!-- Introdução -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4 max-w-4xl text-center">
+      <h2 class="font-heading text-3xl md:text-4xl mb-4">Nossa Lista de Casamento</h2>
+      <div class="section-divider"></div>
+      <p class="text-lg mb-8">Cada presente é uma demonstração de carinho que nos ajudará a construir nosso lar. Se preferir, também temos opção de contribuição em dinheiro para nossa lua de mel.</p>
+      
+    </div>
+  </section>
+
+  <!-- Lista de Presentes -->
+<section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <h2 class="font-heading text-3xl md:text-4xl text-center mb-12">Nossos Presentes Escolhidos</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
+          <div class="image-container">
+            <img src="imagens/presentes/RoupaDeCama.webp" alt="Jogo de Cama King Size" class="gift-image">
+          </div>
+          <div class="p-6">
+            <h3 class="font-heading text-xl mb-2">Jogo de Cama King Size</h3>
+            <p class="text-gray-600 mb-4">Conforto e elegância para nosso descanso</p>
+            <div class="flex justify-end">
+                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
+          <div class="image-container">
+            <img src="imagens/presentes/Jantar.jpg" alt="Conjunto de Jantar" class="gift-image">
+          </div>
+          <div class="p-6">
+            <h3 class="font-heading text-xl mb-2">Conjunto de Jantar</h3>
+            <p class="text-gray-600 mb-4">Para nossas refeições especiais</p>
+            <div class="flex justify-end">
+                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
+          <div class="image-container">
+            <img src="imagens/presentes/airfry.webp" alt="Air Fryer" class="gift-image">
+          </div>
+          <div class="p-6">
+            <h3 class="font-heading text-xl mb-2">Air Fryer</h3>
+            <p class="text-gray-600 mb-4">Para refeições mais saudáveis</p>
+            <div class="flex justify-end">
+                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
+          <div class="image-container">
+            <img src="imagens/presentes/aspiradordepo.webp" alt="Robô Aspirador" class="gift-image">
+          </div>
+          <div class="p-6">
+            <h3 class="font-heading text-xl mb-2">Robô Aspirador</h3>
+            <p class="text-gray-600 mb-4">Para manter nossa casa sempre limpa</p>
+            <div class="flex justify-end">
+                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
+          <div class="image-container">
+            <img src="imagens/presentes/jogodepanela.webp" alt="Jogo de Panelas" class="gift-image">
+          </div>
+          <div class="p-6">
+            <h3 class="font-heading text-xl mb-2">Jogo de Panelas</h3>
+            <p class="text-gray-600 mb-4">Para nossas preparações culinárias</p>
+            <div class="flex justify-end">
+                  <!-- <a href="#" class="btn-secondary">Presentear</a> --> 
+            </div>
+          </div>
+        </div>
+
+        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
+          <div class="image-container">
+            <img src="imagens/presentes/cafeteira.webp" alt="Máquina de Café" class="gift-image">
+          </div>
+          <div class="p-6">
+            <h3 class="font-heading text-xl mb-2">Cafeteira</h3>
+            <p class="text-gray-600 mb-4">Para começar bem nossas manhãs</p>
+            <div class="flex justify-end">
+                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
+          <div class="image-container">
+            <img src="imagens/presentes/microondas.avif" alt="Forno Microondas" class="gift-image">
+          </div>
+          <div class="p-6">
+            <h3 class="font-heading text-xl mb-2">Forno Microondas</h3>
+            <p class="text-gray-600 mb-4">Praticidade no dia a dia</p>
+            <div class="flex justify-end">
+                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
+          <div class="image-container">
+            <img src="imagens/presentes/liquidificador.webp" alt="Liquidificador" class="gift-image">
+          </div>
+          <div class="p-6">
+            <h3 class="font-heading text-xl mb-2">Liquidificador</h3>
+            <p class="text-gray-600 mb-4">Para sucos e vitaminas</p>
+            <div class="flex justify-end">
+                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
+          <div class="image-container">
+            <img src="imagens/presentes/jogodetoalha.jpg" alt="Jogo de Toalhas" class="gift-image">
+          </div>
+          <div class="p-6">
+            <h3 class="font-heading text-xl mb-2">Jogo de Toalhas</h3>
+            <p class="text-gray-600 mb-4">Conforto para nosso banho</p>
+            <div class="flex justify-end">
+                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
+          <div class="image-container">
+            <img src="imagens/presentes/mesadejantar.png" alt="Varal de Roupas" class="gift-image">
+          </div>
+          <div class="p-6">
+            <h3 class="font-heading text-xl mb-2">Mesa de jantar</h3>
+            <p class="text-gray-600 mb-4">Para jantares</p>
+            <div class="flex justify-end">
+                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
+          <div class="image-container">
+            <img src="imagens/presentes/mxer.webp" alt="Ferro de Passar" class="gift-image">
+          </div>
+          <div class="p-6">
+            <h3 class="font-heading text-xl mb-2">Mixer</h3>
+            <p class="text-gray-600 mb-4">Para bater alimentos</p>
+            <div class="flex justify-end">
+                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
+          <div class="image-container">
+            <img src="imagens/presentes/aspiradordepo.webp" alt="Aspirador de Pó" class="gift-image">
+          </div>
+          <div class="p-6">
+            <h3 class="font-heading text-xl mb-2">Aspirador de Pó</h3>
+            <p class="text-gray-600 mb-4">Para limpeza completa</p>
+            <div class="flex justify-end">
+                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
+          <div class="image-container">
+            <img src="imagens/presentes/jogodetaça.webp" alt="Jogo de Taças" class="gift-image">
+          </div>
+          <div class="p-6">
+            <h3 class="font-heading text-xl mb-2">Jogo de Taças</h3>
+            <p class="text-gray-600 mb-4">Para brindes especiais</p>
+            <div class="flex justify-end">
+                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
+          <div class="image-container">
+            <img src="imagens/presentes/cooktop.webp" alt="Cooktop" class="gift-image">
+          </div>
+          <div class="p-6">
+            <h3 class="font-heading text-xl mb-2">Cooktop</h3>
+            <p class="text-gray-600 mb-4">Para preparar deliciosas refeições</p>
+            <div class="flex justify-end">
+                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
+          <div class="image-container">
+            <img src="imagens/presentes/processador.jpg" alt="Processador de Alimentos" class="gift-image">
+          </div>
+          <div class="p-6">
+            <h3 class="font-heading text-xl mb-2">Processador de Alimentos</h3>
+            <p class="text-gray-600 mb-4">Facilidade na cozinha</p>
+            <div class="flex justify-end">
+                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
+          <div class="image-container">
+            <img src="imagens/presentes/edredon.webp" alt="Edredom" class="gift-image">
+          </div>
+          <div class="p-6">
+            <h3 class="font-heading text-xl mb-2">Edredom</h3>
+            <p class="text-gray-600 mb-4">Conforto para noites frescas</p>
+            <div class="flex justify-end">
+                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
+          <div class="image-container">
+            <img src="imagens/presentes/Faqueiro.jpg" alt="Faqueiro" class="gift-image">
+          </div>
+          <div class="p-6">
+            <h3 class="font-heading text-xl mb-2">Faqueiro</h3>
+            <p class="text-gray-600 mb-4">Para nossas refeições</p>
+            <div class="flex justify-end">
+                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
+          <div class="image-container">
+            <img src="imagens/presentes/sanduicheira.jpg" alt="Sanduicheira" class="gift-image">
+          </div>
+          <div class="p-6">
+            <h3 class="font-heading text-xl mb-2">Sanduicheira</h3>
+            <p class="text-gray-600 mb-4">Para lanches rápidos</p>
+            <div class="flex justify-end">
+                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
+          <div class="image-container">
+            <img src="imagens/presentes/chaleira.jpg" alt="Chaleira Elétrica" class="gift-image">
+          </div>
+          <div class="p-6">
+            <h3 class="font-heading text-xl mb-2">Chaleira Elétrica</h3>
+            <p class="text-gray-600 mb-4">Para chás e cafés</p>
+            <div class="flex justify-end">
+                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
+          <div class="image-container">
+            <img src="imagens/presentes/sofa.png" alt="Sofá" class="gift-image">
+          </div>
+          <div class="p-6">
+            <h3 class="font-heading text-xl mb-2">Sofá</h3>
+            <p class="text-gray-600 mb-4">Para sala de estar</p>
+            <div class="flex justify-end">
+                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
+            </div>
+          </div>
+        </div>
+        
+        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
+          <div class="image-container">
+            <img src="imagens/presentes/tanquinho.webp" alt="Tanquinho de lavar roupas" class="gift-image">
+          </div>
+          <div class="p-6">
+            <h3 class="font-heading text-xl mb-2">Tanquinho de lavar roupas</h3>
+            <p class="text-gray-600 mb-4">Para uma lavagem rápida e eficiente</p>
+            <div class="flex justify-end">
+                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
+            </div>
+          </div>
+        </div>
+        
+        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
+          <div class="image-container">
+            <img src="imagens/presentes/lavalouças.webp" alt="Lava Louças" class="gift-image">
+          </div>
+          <div class="p-6">
+            <h3 class="font-heading text-xl mb-2">Lava Louças</h3>
+            <p class="text-gray-600 mb-4">Praticidade na hora de lavar a louça</p>
+            <div class="flex justify-end">
+                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
+          <div class="image-container">
+            <img src="imagens/presentes/batedeira.webp" alt="Batedeira" class="gift-image">
+          </div>
+          <div class="p-6">
+            <h3 class="font-heading text-xl mb-2">Batedeira</h3>
+            <p class="text-gray-600 mb-4">Para bolos e massas deliciosas</p>
+            <div class="flex justify-end">
+                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
+          <div class="image-container">
+            <img src="imagens/presentes/forno.webp" alt="Forno" class="gift-image">
+          </div>
+          <div class="p-6">
+            <h3 class="font-heading text-xl mb-2">Forno</h3>
+            <p class="text-gray-600 mb-4">Para assar e gratinar</p>
+            <div class="flex justify-end">
+                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="gift-card bg-white rounded-xl overflow-hidden shadow-md">
+          <div class="image-container">
+            <img src="imagens/presentes/panelaeletrica.webp" alt="Panela Elétrica" class="gift-image">
+          </div>
+          <div class="p-6">
+            <h3 class="font-heading text-xl mb-2">Panela Elétrica</h3>
+            <p class="text-gray-600 mb-4">Cozinhe com mais facilidade</p>
+            <div class="flex justify-end">
+                 <!-- <a href="#" class="btn-secondary">Presentear</a> -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Opção de PIX -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4 max-w-4xl">
+      <div class="bg-gradient-to-r from-amber-100 to-amber-50 rounded-2xl p-8 md:p-12 shadow-lg">
+        <h2 class="font-heading text-3xl md:text-4xl text-center mb-6">Contribuição via PIX</h2>
+        <p class="text-center text-lg mb-8">Se preferir nos presentear com uma contribuição em dinheiro para nossa lua de mel, utilize nossa chave PIX:</p>
+        
+        <div class="bg-white p-6 rounded-xl shadow-md max-w-md mx-auto">
+          <div class="text-center mb-6">
+            <div class="bg-gray-100 p-4 rounded-lg inline-block">
+              <img src="imagens/PIX.jpg" alt="QR Code PIX" class="w-48 h-48 mx-auto">
+            </div>
+          </div>
+          
+          <div class="mb-6">
+            <h3 class="font-semibold mb-2">Chave PIX copia e cola:</h3>
+            <div class="pix-key-container">
+              <div class="pix-key-wrapper">
+                <span id="pixKey">00020126360014BR.GOV.BCB.PIX0114+55669992196385204000053039865802BR5925PEDRO VINICIUS MENEZES DE6015SANTA RITA DO A62070503***6304C0E7</span>
+              </div>
+              <button onclick="copyPixKey()" class="copy-btn" title="Copiar chave PIX">
+                <i class="fas fa-copy"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="text-center">
+            <p class="text-sm text-gray-600 mb-4">Ao realizar a transferência, adicione seu nome no campo de mensagem para que possamos agradecer!</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Agradecimento -->
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4 max-w-3xl text-center">
+      <h2 class="font-heading text-3xl md:text-4xl mb-6">Agradecemos de Coração</h2>
+      <p class="text-lg mb-8">Mais importante que qualquer presente, é ter você ao nosso lado nesse dia tão especial. Sua presença é o maior presente que poderíamos receber!</p>
+      
+      <div class="bg-white p-8 rounded-xl shadow-md">
+        <div class="text-5xl text-amber-400 mb-4">
+          <i class="fas fa-heart"></i>
+        </div>
+        <p class="font-heading text-2xl text-primary">Déborah & Pedro Vinícius</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 py-12">
+    <div class="container mx-auto px-4 text-center">
+      <h3 class="font-heading text-2xl mb-4">Déborah & Pedro Vinícius</h3>
+      <p class="mb-6">22 de Novembro de 2025</p>
+      <p>© 2025 Débora & Pedro. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Mensagem de cópia bem-sucedida -->
+  <div id="copiedMessage" class="copied-message">
+    Chave PIX copiada para a área de transferência!
+  </div>
+
+  <script>
+    function copyPixKey() {
+      const pixKey = document.getElementById('pixKey').innerText;
+      navigator.clipboard.writeText(pixKey).then(() => {
+        // Mostrar mensagem de sucesso
+        const message = document.getElementById('copiedMessage');
+        message.classList.add('show');
+        
+        // Esconder a mensagem após 3 segundos
+        setTimeout(() => {
+          message.classList.remove('show');
+        }, 3000);
+      }).catch(err => {
+        console.error('Erro ao copiar a chave PIX: ', err);
+        alert('Não foi possível copiar a chave PIX. Tente novamente.');
+      });
+    }
+  </script>
+</body>
+</html>
