@@ -31,6 +31,7 @@
       font-family: 'Playfair Display', serif;
     }
 
+    /* ALTERAÇÃO PRINCIPAL: Ajuste da imagem de capa */
     .hero-image {
       background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
         url('./imagens/Capa.jpg'); /* <<< SUA FOTO */
@@ -41,11 +42,34 @@
       position: static;
     }
 
-    /* NOVO: Garantir que a imagem de capa seja totalmente visível */
+    /* NOVO: Media query para mobile com ajustes específicos */
     @media screen and (max-width: 768px) {
       .hero-image {
         background-attachment: scroll;
-        background-position: center 30%;
+        background-position: center center;
+        background-size: cover;
+      }
+      
+      /* Garantir que o texto não fique muito grande em mobile */
+      .hero-image h1 {
+        font-size: 2.5rem !important;
+        margin-bottom: 1rem;
+      }
+
+      .hero-image p {
+        font-size: 1.1rem !important;
+        margin-bottom: 2rem;
+      }
+    }
+
+    /* Ajuste adicional para telas muito pequenas */
+    @media screen and (max-width: 480px) {
+      .hero-image {
+        background-position: center center;
+      }
+      
+      .hero-image h1 {
+        font-size: 2rem !important;
       }
     }
 
@@ -392,7 +416,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100%; /* Garantir que ocupe a altura do container */
+      height: 100%; /* Garantir que ocupe a altura del container */
     }
 
     .carousel-slide img {
@@ -446,15 +470,6 @@
       
       .right {
         left: 0%;
-      }
-
-      /* Ajustes de texto para mobile */
-      .hero-image h1 {
-        font-size: 2.5rem !important;
-      }
-
-      .hero-image p {
-        font-size: 1.1rem !important;
       }
 
       .countdown-number {
@@ -537,10 +552,6 @@
 
     /* Ajustes adicionais para telas muito pequenas */
     @media screen and (max-width: 480px) {
-      .hero-image h1 {
-        font-size: 2rem !important;
-      }
-
       .countdown-number {
         font-size: 1.5rem;
       }
@@ -590,15 +601,11 @@
     }
 
     /* NOVO: Estilos para garantir que a imagem de capa seja totalmente visível */
-    @media screen and (max-width: 768px) and (orientation: portrait) {
+    @media screen and (max-width: 768px) {
       .hero-image {
-        background-position: center 25%;
-      }
-    }
-    
-    @media screen and (max-width: 768px) and (orientation: landscape) {
-      .hero-image {
-        background-position: center 35%;
+        background-attachment: scroll;
+        background-position: center center;
+        background-size: cover;
       }
     }
   </style>
@@ -1020,7 +1027,7 @@
         if (window.innerWidth <= 768) {
           // Para mobile, garantir que a imagem seja totalmente visível
           hero.style.backgroundSize = 'cover';
-          hero.style.backgroundPosition = 'center 30%';
+          hero.style.backgroundPosition = 'center center';
         } else {
           // Para desktop, manter o comportamento original
           hero.style.backgroundSize = 'cover';
