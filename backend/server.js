@@ -7,27 +7,68 @@ const db = require("./db");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Middlewares
 app.use(cors());
 app.use(bodyParser.json());
+
+// Servir arquivos estáticos da pasta frontend
 app.use(express.static(path.join(__dirname, "../frontend")));
+
+// ✅ Health Check para Render
+app.get("/health", (req, res) => {
+    res.status(200).json({ 
+        status: "OK", 
+        timestamp: new Date().toISOString(),
+        service: "RSVP API"
+    });
+});
+
+// ✅ Rota principal - serve index.html do frontend
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend", "index.html"));
+});
+
+// ✅ Rota para página de presente
+app.get("/presente", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend", "presente.html"));
+});
+
+// ✅ Rota admin para ver confirmações
+app.get("/respostas", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend", "responsfas.html"));
+});
 
 // 📌 Rota para salvar RSVP
 app.post("/api/rsvp", (req, res) => {
     const { name, contact, attending, message } = req.body;
 
+    console.log("Recebendo RSVP:", { name, contact, attending, message });
+
+    // Validação
     if (!name?.trim() || !contact?.trim() || !attending?.trim()) {
-        return res.status(400).json({ error: "Campos obrigatórios faltando" });
+        return res.status(400).json({ 
+            error: "Campos obrigatórios faltando: nome, contato e confirmação são obrigatórios." 
+        });
     }
 
+    // Inserir no banco
     db.run(
         `INSERT INTO rsvp (name, contact, attending, message) VALUES (?, ?, ?, ?)`,
         [name.trim(), contact.trim(), attending.trim(), message?.trim() || ""],
-        (err) => {
+        function(err) {
             if (err) {
                 console.error("Erro ao salvar no banco:", err);
-                return res.status(500).json({ error: "Erro ao salvar no banco" });
+                return res.status(500).json({ 
+                    error: "Erro interno do servidor ao salvar confirmação." 
+                });
             }
-            res.json({ success: true, message: "Confirmação registrada com sucesso!" });
+            
+            console.log(`RSVP salvo com ID: ${this.lastID}`);
+            res.json({ 
+                success: true, 
+                message: "Confirmação registrada com sucesso! Obrigado!",
+                id: this.lastID 
+            });
         }
     );
 });
@@ -37,14 +78,54 @@ app.get("/api/rsvp", (req, res) => {
     db.all(`SELECT * FROM rsvp ORDER BY created_at DESC`, [], (err, rows) => {
         if (err) {
             console.error("Erro ao buscar dados:", err);
-            return res.status(500).json({ error: "Erro ao buscar dados" });
+            return res.status(500).json({ 
+                error: "Erro interno ao buscar confirmações." 
+            });
         }
-        console.log("RSVPs retornados:", rows); // 🔍 para depuração
+        
+        console.log(`Retornando ${rows.length} confirmações`);
         res.json(rows);
     });
 });
 
-// 📌 Iniciar servidor
-app.listen(PORT, () => {
-    console.log(`Servidor rodando em http://localhost:${PORT}`);
+// 📌 Rota para estatísticas
+app.get("/api/stats", (req, res) => {
+    db.all(`
+        SELECT 
+            COUNT(*) as total,
+            SUM(CASE WHEN attending = 'yes' THEN 1 ELSE 0 END) as confirmados,
+            SUM(CASE WHEN attending = 'no' THEN 1 ELSE 0 END) as nao_confirmados
+        FROM rsvp
+    `, [], (err, rows) => {
+        if (err) {
+            console.error("Erro ao buscar estatísticas:", err);
+            return res.status(500).json({ error: "Erro ao buscar estatísticas" });
+        }
+        
+        res.json(rows[0] || { total: 0, confirmados: 0, nao_confirmados: 0 });
+    });
 });
+
+// ✅ Middleware de erro 404
+app.use((req, res) => {
+    res.status(404).json({ error: "Rota não encontrada" });
+});
+
+// ✅ Middleware de tratamento de erros
+app.use((err, req, res, next) => {
+    console.error("Erro não tratado:", err);
+    res.status(500).json({ 
+        error: "Erro interno do servidor",
+        message: process.env.NODE_ENV === 'production' ? 'Algo deu errado!' : err.message
+    });
+});
+
+// 📌 Iniciar servidor
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`🚀 Servidor rodando na porta ${PORT}`);
+    console.log(`📍 Health check: http://localhost:${PORT}/health`);
+    console.log(`📍 Página principal: http://localhost:${PORT}/`);
+    console.log(`📍 Admin: http://localhost:${PORT}/respostas`);
+});
+
+module.exports = app;
