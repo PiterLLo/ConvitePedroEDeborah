@@ -1,15 +1,8 @@
 const sqlite3 = require("sqlite3").verbose();
 const path = require("path");
-const fs = require("fs");
 
-// No Render, precisamos usar caminho absoluto e garantir que o diretório existe
-const dbPath = path.join(__dirname, "data", "rsvp.db");
-
-// Garante que o diretório data existe
-const dataDir = path.join(__dirname, "data");
-if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true });
-}
+// O banco fica na pasta backend (mesma pasta do db.js)
+const dbPath = path.join(__dirname, "rsvp.db");
 
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
