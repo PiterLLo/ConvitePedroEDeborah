@@ -31,26 +31,6 @@
       font-family: 'Playfair Display', serif;
     }
 
-    /* Garantir que o texto não fique muito grande em mobile */
-    @media screen and (max-width: 768px) {
-      .text-responsive {
-        font-size: 0.9rem;
-      }
-      .heading-responsive {
-        font-size: 1.8rem;
-      }
-    }
-
-    /* Ajuste adicional para telas muito pequenas */
-    @media screen and (max-width: 480px) {
-      .text-responsive {
-        font-size: 0.8rem;
-      }
-      .heading-responsive {
-        font-size: 1.5rem;
-      }
-    }
-
     @keyframes fadeIn {
       from {
         opacity: 0;
@@ -103,32 +83,6 @@
       height: 3px;
       background: var(--secondary);
       margin: 1.5rem auto;
-    }
-
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 1rem;
-    }
-
-    .gallery-item {
-      border-radius: 8px;
-      overflow: hidden;
-      height: 250px;
-      position: relative;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-
-    .gallery-item:hover {
-      transform: scale(1.03);
-    }
-
-    .gallery-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.5s ease;
     }
 
     .timeline {
@@ -274,7 +228,7 @@
       box-shadow: 0 2px 10px rgba(0,0,0,0.2);
     }
 
-    /* ESTILOS ADICIONADOS/MODIFICADOS PARA O FORMULÁRIO */
+    /* ESTILOS PARA O FORMULÁRIO */
     .form-input {
       width: 100%;
       padding: 1rem;
@@ -373,7 +327,7 @@
       transform: translateY(-2px);
     }
     
-    /* ESTILOS DO CARROSSEL - AJUSTADOS */
+    /* ESTILOS DO CARROSSEL */
     .carousel-container {
       display: flex;
       transition: transform 0.5s ease;
@@ -410,82 +364,17 @@
       transform: scale(1.2);
     }
 
-    /* Container principal do carrossel com altura controlada */
     .carousel-wrapper {
       position: relative;
-      max-width: 4xl;
+      max-width: 400px;
       margin: 0 auto;
       overflow: hidden;
       border-radius: 12px;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-      height: 400px;
+      height: 550px;
     }
 
-    /* Header melhorado */
-    .hero-container {
-      position: relative;
-      background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3));
-      min-height: 70vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .hero-image {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: -1;
-    }
-
-    /* NOVOS ESTILOS PARA OS CAMPOS DE NOME */
-    .name-field-container {
-      margin-bottom: 1rem;
-      position: relative;
-    }
-    
-    .remove-name-btn {
-      position: absolute;
-      right: 0.5rem;
-      top: 50%;
-      transform: translateY(-50%);
-      background: #f87171;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 24px;
-      height: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 0.8rem;
-    }
-    
-    .add-name-btn {
-      background: var(--secondary);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 0.5rem 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      cursor: pointer;
-      margin-bottom: 1rem;
-      transition: all 0.3s ease;
-    }
-    
-    .add-name-btn:hover {
-      background: var(--primary);
-      transform: translateY(-2px);
-    }
-
-    /* Responsividade para timeline */
+    /* Responsividade */
     @media screen and (max-width: 768px) {
       .timeline::after {
         left: 31px;
@@ -509,7 +398,6 @@
         font-size: 1.8rem;
       }
 
-      /* AJUSTES ESPECÍFICOS PARA O FORMULÁRIO NO MOBILE */
       .rsvp-options {
         flex-direction: column;
         gap: 0.75rem;
@@ -527,22 +415,11 @@
         border-radius: 10px;
       }
 
-      /* Ajustes na galeria */
-      .gallery-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      }
-
-      .gallery-item {
-        height: 200px;
-      }
-
-      /* Ajustes no parallax */
       .parallax {
         background-attachment: scroll;
         min-height: 300px;
       }
 
-      /* Menu mobile */
       .mobile-menu-button {
         display: flex;
       }
@@ -551,20 +428,18 @@
         display: block;
       }
 
-      /* Ajustes no mapa */
       .map-container {
         height: 300px;
       }
 
-      /* Ajustes no footer */
       footer .flex {
         justify-content: center;
         gap: 1.5rem;
       }
 
-      /* AJUSTES ESPECÍFICOS DO CARROSSEL PARA MOBILE */
       .carousel-wrapper {
-        height: 300px;
+        height: 400px;
+        max-width: 300px;
       }
       
       .carousel-btn {
@@ -581,14 +456,8 @@
         width: 10px;
         height: 10px;
       }
-
-      /* Header mobile */
-      .hero-container {
-        min-height: 60vh;
-      }
     }
 
-    /* Ajustes adicionais para telas muito pequenas */
     @media screen and (max-width: 480px) {
       .countdown-number {
         font-size: 1.5rem;
@@ -609,7 +478,6 @@
         padding: 15px;
       }
       
-      /* Ajustes finos para formulário em telas muito pequenas */
       .rsvp-option-content {
         padding: 0.875rem 0.5rem;
         font-size: 0.9rem;
@@ -619,26 +487,16 @@
         padding: 0.75rem;
       }
       
-      /* Ajustes adicionais do carrossel para telas muito pequenas */
       .carousel-wrapper {
-        height: 250px;
-      }
-      
-      .carousel-btn {
-        width: 30px;
-        height: 30px;
-        padding: 0.3rem;
-      }
-
-      .hero-container {
-        min-height: 50vh;
+        height: 350px;
+        max-width: 280px;
       }
     }
 
-    /* Ajustes para tablets */
     @media screen and (min-width: 769px) and (max-width: 1024px) {
       .carousel-wrapper {
-        height: 350px;
+        height: 500px;
+        max-width: 350px;
       }
     }
   </style>
@@ -658,26 +516,38 @@
       <a href="#gallery" class="text-lg font-medium" onclick="toggleMobileMenu()">Galeria</a>
       <a href="#rsvp" class="text-lg font-medium" onclick="toggleMobileMenu()">Confirmação</a>
       <a href="#location" class="text-lg font-medium" onclick="toggleMobileMenu()">Localização</a>
-      <a href="presente.html" class="text-lg font-medium" onclick="toggleMobileMenu()">Lista de Presentes</a>
+      <a href="/presente.html" class="text-lg font-medium" onclick="toggleMobileMenu()">Lista de Presentes</a>
+      <a href="/responsfas.html" class="text-lg font-medium" onclick="toggleMobileMenu()">Ver Respostas</a>
     </div>
   </div>
 
-  <!-- HEADER MELHORADO -->
+  <!-- HEADER -->
   <header>
-    <div class="hero-container">
-      <img src="./imagens/Capa.jpg" alt="Déborah e Pedro" class="hero-image" fetchpriority="high">
-      <div class="text-center text-white px-4 z-10">
+    <div class="relative bg-black overflow-hidden">
+      <div class="min-h-[360px] md:min-h-[440px]"></div>
+
+      <img
+        src="./imagens/Capa.jpg"
+        alt="Déborah e Pedro"
+        class="absolute inset-0 w-full h-full object-contain"
+        fetchpriority="high"
+      />
+
+      <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/35 via-black/25 to-black/0"></div>
+
+      <div class="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4">
         <h1 class="font-heading text-4xl md:text-6xl mb-3">Déborah &amp; Pedro Vinícius</h1>
         <p class="text-base md:text-xl max-w-2xl italic mb-6">
           "O amor não se vê com os olhos, mas com o coração."
         </p>
-        <div class="bg-white/95 text-black py-2.5 px-5 rounded-full shadow-lg inline-block">
+        <div class="bg-white/95 text-black py-2.5 px-5 rounded-full shadow-lg">
           <p class="text-lg md:text-2xl font-bold">22 • 11 • 2025</p>
         </div>
+
+        <a href="#countdown" class="absolute bottom-4 md:bottom-6 animate-bounce">
+          <i class="fas fa-chevron-down text-2xl md:text-3xl text-white"></i>
+        </a>
       </div>
-      <a href="#countdown" class="absolute bottom-4 md:bottom-6 animate-bounce">
-        <i class="fas fa-chevron-down text-2xl md:text-3xl text-white"></i>
-      </a>
     </div>
   </header>
 
@@ -714,7 +584,6 @@
         <p class="text-center max-w-3xl mx-auto mb-12">Uma jornada abençoada por Deus, rumo ao altar do matrimônio.</p>
         
         <div class="timeline">
-            <!-- Primeiro Marco -->
             <div class="timeline-item left">
                 <div class="timeline-content">
                     <div class="flex items-center mb-2">
@@ -728,7 +597,6 @@
                 </div>
             </div>
             
-            <!-- Segundo Marco -->
             <div class="timeline-item right">
                 <div class="timeline-content">
                     <div class="flex items-center mb-2">
@@ -742,7 +610,6 @@
                 </div>
             </div>
             
-            <!-- Terceiro Marco -->
             <div class="timeline-item left">
                 <div class="timeline-content">
                     <div class="flex items-center mb-2">
@@ -756,7 +623,6 @@
                 </div>
             </div>
             
-            <!-- Quarto Marco -->
             <div class="timeline-item right">
                 <div class="timeline-content">
                     <div class="flex items-center mb-2">
@@ -771,7 +637,6 @@
             </div>
         </div>
         
-        <!-- Versículo bíblico -->
         <div class="mt-16 bg-white rounded-xl p-8 shadow-lg text-center">
             <h3 class="font-heading text-2xl mb-6">Nossa Base</h3>
             <p class="text-lg italic text-gray-700 mb-4">"Portanto, o que Deus uniu, não o separe o homem."</p>
@@ -780,45 +645,44 @@
     </div>
   </section>
   
-<!-- GALLERY SECTION -->
-<section id="gallery" class="py-16 bg-white">
-  <div class="container mx-auto px-4">
-    <h2 class="font-heading text-3xl md:text-4xl text-center mb-4">Nossos Momentos</h2>
-    <div class="section-divider"></div>
-    
-    <!-- Carrossel Container -->
-    <div class="carousel-wrapper" style="max-width: 800px; height: 500px; margin: 0 auto;">
-      <div class="carousel-container h-full" id="carousel">
-        <!-- Imagens do carrossel - CORRIGIDAS -->
-        <div class="carousel-slide">
-          <img src="imagens/FOTINHA.jpg" alt="Noivos 1" onerror="this.style.display='none'">
-        </div>
-        <div class="carousel-slide">
-          <img src="imagens/Foto2.jpg" alt="Noivos 2" onerror="this.style.display='none'">
-        </div>
-        <div class="carousel-slide">
-          <img src="imagens/fota.jpg" alt="Noivos 3" onerror="this.style.display='none'">
-        </div>
-        <!-- Removida a imagem vazia -->
-      </div>
+  <!-- GALLERY SECTION -->
+  <section id="gallery" class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="font-heading text-3xl md:text-4xl text-center mb-4">Nossos Momentos</h2>
+      <div class="section-divider"></div>
       
-      <!-- Botões de navegação -->
-      <button class="carousel-btn carousel-prev absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/80 rounded-full p-2 shadow-md">
-        <i class="fas fa-chevron-left text-primary"></i>
-      </button>
-      <button class="carousel-btn carousel-next absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/80 rounded-full p-2 shadow-md">
-        <i class="fas fa-chevron-right text-primary"></i>
-      </button>
-      
-      <!-- Indicadores -->
-      <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-        <div class="carousel-indicator w-3 h-3 rounded-full bg-white/60 cursor-pointer transition-all"></div>
-        <div class="carousel-indicator w-3 h-3 rounded-full bg-white/60 cursor-pointer transition-all"></div>
-        <div class="carousel-indicator w-3 h-3 rounded-full bg-white/60 cursor-pointer transition-all"></div>
+      <div class="carousel-wrapper">
+        <div class="carousel-container h-full" id="carousel">
+          <div class="carousel-slide">
+            <img src="imagens/FOTO1.jpg" alt="Noivos 1">
+          </div>
+          <div class="carousel-slide">
+            <img src="imagens/Foto2.jpg" alt="Noivos 2">
+          </div>
+          <div class="carousel-slide">
+            <img src="imagens/FOTO 3.jpg" alt="Noivos 3">
+          </div>
+          <div class="carousel-slide">
+            <img src="imagens/IMG_0359.JPG" alt="Noivos 4">
+          </div>
+        </div>
+        
+        <button class="carousel-btn carousel-prev absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/80 rounded-full p-2 shadow-md">
+          <i class="fas fa-chevron-left text-primary"></i>
+        </button>
+        <button class="carousel-btn carousel-next absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/80 rounded-full p-2 shadow-md">
+          <i class="fas fa-chevron-right text-primary"></i>
+        </button>
+        
+        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+          <div class="carousel-indicator w-3 h-3 rounded-full bg-white/60 cursor-pointer transition-all"></div>
+          <div class="carousel-indicator w-3 h-3 rounded-full bg-white/60 cursor-pointer transition-all"></div>
+          <div class="carousel-indicator w-3 h-3 rounded-full bg-white/60 cursor-pointer transition-all"></div>
+          <div class="carousel-indicator w-3 h-3 rounded-full bg-white/60 cursor-pointer transition-all"></div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
   <!-- PARALLAX SECTION -->
   <div class="parallax">
@@ -838,9 +702,16 @@
       <div class="bg-white rounded-xl p-8 max-w-2xl mx-auto shadow-xl">
         <form id="rsvpForm" class="space-y-6">
           <div>
+            <label for="name" class="block mb-2 font-semibold">Nome Completo</label>
+            <input type="text" id="name" required class="form-input">
+          </div>
+          <div>
+            <label for="contact" class="block mb-2 font-semibold">Email ou Telefone</label>
+            <input type="text" id="contact" required class="form-input">
+          </div>
+          <div>
             <p class="mb-2 font-semibold text-lg">📅 Confirmar presença</p>
             <div class="rsvp-options">
-              <!-- Botão SIM -->
               <label class="rsvp-option rsvp-yes">
                 <input type="radio" name="attending" value="yes" checked>
                 <div class="rsvp-option-content">
@@ -848,7 +719,6 @@
                   <span>Sim, estarei presente</span>
                 </div>
               </label>
-              <!-- Botão NÃO -->
               <label class="rsvp-option rsvp-no">
                 <input type="radio" name="attending" value="no">
                 <div class="rsvp-option-content">
@@ -858,23 +728,6 @@
               </label>
             </div>
           </div>
-          
-          <div>
-            <label class="block mb-2 font-semibold">Nome(s) dos convidados</label>
-            <div id="nameFieldsContainer">
-              <!-- Primeiro campo de nome -->
-              <div class="name-field-container">
-                <input type="text" name="guestName[]" required class="form-input" placeholder="Nome completo">
-              </div>
-            </div>
-            
-            <!-- Botão para adicionar mais nomes -->
-            <button type="button" id="addNameBtn" class="add-name-btn">
-              <i class="fas fa-plus"></i>
-              Adicionar mais um nome
-            </button>
-          </div>
-          
           <div>
             <label for="message" class="block mb-2 font-semibold">Mensagem para os noivos (opcional)</label>
             <textarea id="message" rows="4" class="form-textarea"></textarea>
@@ -884,7 +737,6 @@
           </button>
         </form>
 
-        <!-- Mensagem de Agradecimento -->
         <div id="thankYouMessage" class="hidden text-center py-8 animate-fadeIn">
           <div class="text-green-600 text-5xl mb-4">
             <i class="fas fa-check-circle"></i>
@@ -911,8 +763,11 @@
             <p class="flex items-center"><i class="fas fa-map-pin mr-3 text-primary"></i>Centro, Santa Helena de Goiás- Go</p>
             <p class="flex items-center"><i class="fas fa-clock mr-3 text-primary"></i><strong>Horário:</strong> 19h</p>
           </div>
-          <a href="presente.html" class="inline-flex items-center text-accent font-semibold hover:text-primary transition">
+          <a href="/presente.html" class="inline-flex items-center text-accent font-semibold hover:text-primary transition mr-4">
             <i class="fas fa-gift mr-2"></i> Ver lista de presentes
+          </a>
+          <a href="/responsfas.html" class="inline-flex items-center text-accent font-semibold hover:text-primary transition">
+            <i class="fas fa-list-check mr-2"></i> Ver confirmações
           </a>
         </div>
         <div class="h-96 bg-gray-200 rounded-xl overflow-hidden shadow-lg map-container">
@@ -949,10 +804,8 @@
     document.addEventListener('DOMContentLoaded', () => {
       const form = document.getElementById('rsvpForm');
       const thankYou = document.getElementById('thankYouMessage');
-      const nameFieldsContainer = document.getElementById('nameFieldsContainer');
-      const addNameBtn = document.getElementById('addNameBtn');
 
-      // Configurar contagem regressiva
+      // Contagem regressiva
       function updateCountdown() {
         const weddingDate = new Date('November 22, 2025 19:00:00').getTime();
         const now = new Date().getTime();
@@ -972,56 +825,42 @@
       setInterval(updateCountdown, 1000);
       updateCountdown();
 
-      // Função para adicionar campo de nome
-      function addNameField() {
-        const nameFieldDiv = document.createElement('div');
-        nameFieldDiv.className = 'name-field-container';
-        
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.name = 'guestName[]';
-        input.required = true;
-        input.className = 'form-input';
-        input.placeholder = 'Nome completo';
-        
-        const removeBtn = document.createElement('button');
-        removeBtn.type = 'button';
-        removeBtn.className = 'remove-name-btn';
-        removeBtn.innerHTML = '×';
-        removeBtn.addEventListener('click', function() {
-          nameFieldDiv.remove();
-        });
-        
-        nameFieldDiv.appendChild(input);
-        nameFieldDiv.appendChild(removeBtn);
-        nameFieldsContainer.appendChild(nameFieldDiv);
-      }
-
-      // Adicionar evento ao botão de adicionar nome
-      addNameBtn.addEventListener('click', addNameField);
-
-      // Form submission
-      form.addEventListener('submit', (e) => {
+      // Form submission - CONECTADO COM O BACKEND
+      form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        // Coletar todos os nomes
-        const nameInputs = document.querySelectorAll('input[name="guestName[]"]');
-        const names = Array.from(nameInputs).map(input => input.value).filter(name => name.trim() !== '');
-        
-        // Aqui você normalmente enviaria os dados para um servidor
-        console.log('Nomes dos convidados:', names);
-        
-        // Mostrar mensagem de agradecimento
-        form.classList.add('hidden');
-        thankYou.classList.remove('hidden');
-        form.reset();
-        
-        // Restaurar apenas um campo de nome
-        nameFieldsContainer.innerHTML = '';
-        addNameField();
+        const formData = {
+          name: document.getElementById('name').value,
+          contact: document.getElementById('contact').value,
+          attending: document.querySelector('input[name="attending"]:checked').value,
+          message: document.getElementById('message').value
+        };
+
+        try {
+          const response = await fetch('/api/rsvp', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+          });
+
+          const result = await response.json();
+
+          if (response.ok) {
+            form.classList.add('hidden');
+            thankYou.classList.remove('hidden');
+            form.reset();
+          } else {
+            alert('Erro: ' + result.error);
+          }
+        } catch (error) {
+          console.error('Erro:', error);
+          alert('Erro de conexão. Tente novamente.');
+        }
       });
 
-      // Mobile menu toggle
+      // Mobile menu
       window.toggleMobileMenu = function() {
         const menu = document.getElementById('mobileMenu');
         menu.classList.toggle('active');
@@ -1029,12 +868,12 @@
 
       document.getElementById('mobileMenuButton').addEventListener('click', toggleMobileMenu);
 
-      // Scroll to RSVP function
+      // Scroll to RSVP
       window.scrollToRSVP = function() {
         document.getElementById('rsvp').scrollIntoView({ behavior: 'smooth' });
       }
 
-      // Modal functionality
+      // Modal
       window.openModal = function(img) {
         const modal = document.getElementById('imageModal');
         const modalImg = document.getElementById('modalImage');
@@ -1046,7 +885,6 @@
         document.getElementById('imageModal').style.display = "none";
       }
 
-      // Close modal when clicking outside
       window.onclick = function(event) {
         const modal = document.getElementById('imageModal');
         if (event.target == modal) {
@@ -1054,7 +892,7 @@
         }
       }
 
-      // Carousel functionality
+      // Carousel
       const carousel = document.getElementById('carousel');
       const slides = document.querySelectorAll('.carousel-slide');
       const indicators = document.querySelectorAll('.carousel-indicator');
@@ -1063,7 +901,6 @@
       function updateCarousel() {
         carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
         
-        // Update indicators
         indicators.forEach((indicator, index) => {
           if (index === currentSlide) {
             indicator.classList.add('active');
@@ -1075,34 +912,29 @@
         });
       }
 
-      // Next slide
       document.querySelector('.carousel-next').addEventListener('click', () => {
         currentSlide = (currentSlide + 1) % slides.length;
         updateCarousel();
       });
 
-      // Previous slide
       document.querySelector('.carousel-prev').addEventListener('click', () => {
         currentSlide = (currentSlide - 1 + slides.length) % slides.length;
         updateCarousel();
       });
 
-      // Auto-advance slides
       setInterval(() => {
         currentSlide = (currentSlide + 1) % slides.length;
         updateCarousel();
       }, 5000);
 
-      // Initialize carousel
-      updateCarousel();
-
-      // Add click events to indicators
       indicators.forEach((indicator, index) => {
         indicator.addEventListener('click', () => {
           currentSlide = index;
           updateCarousel();
         });
       });
+
+      updateCarousel();
     });
   </script>
 </body>
