@@ -7,53 +7,49 @@ const db = require("./db");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// ✅ DEBUG: Log para verificar se o servidor está iniciando
+console.log("🔄 Iniciando servidor no Render...");
+console.log("📁 Diretório atual:", __dirname);
+console.log("📍 Tentando acessar frontend:", path.join(__dirname, "../frontend"));
+
 // Middlewares
 app.use(cors());
 app.use(bodyParser.json());
 
-// ✅ NO RENDER: Servir arquivos estáticos da forma correta
+// ✅ CORRIGIDO: Caminho absoluto para o frontend
 app.use(express.static(path.join(__dirname, "../frontend")));
 
-// ✅ Health Check para Render (MANTENHA)
+// ✅ Health Check
 app.get("/health", (req, res) => {
+    console.log("✅ Health check acessado");
     res.status(200).json({ 
         status: "OK", 
         timestamp: new Date().toISOString(),
-        service: "RSVP API",
-        environment: process.env.NODE_ENV || 'production'
+        directory: __dirname,
+        message: "Servidor funcionando com estrutura atual!"
     });
 });
 
-// ✅ Rota de teste da API
+// ✅ Rota de teste da API - SIMPLES
 app.get("/api/test", (req, res) => {
+    console.log("✅ /api/test acessada com sucesso!");
     res.json({ 
-        message: "API está funcionando no Render!", 
-        timestamp: new Date().toISOString()
+        message: "API está funcionando!", 
+        timestamp: new Date().toISOString(),
+        structure: "backend/frontend mantida"
     });
 });
 
-// ✅ Rotas principais - CORRIGIDAS PARA RENDER
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend/index.html"));
-});
-
-app.get("/presente", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend/presente.html"));
-});
-
-app.get("/respostas", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend/respostas.html"));
-});
-
-// 📌 Rota para listar confirmações (MANTENHA)
+// 📌 Rota para listar confirmações - COM MAIS LOGS
 app.get("/api/rsvp", (req, res) => {
     console.log("📥 GET /api/rsvp - Buscando confirmações...");
+    console.log("📍 Headers:", req.headers);
     
     db.all(`SELECT * FROM rsvp ORDER BY created_at DESC`, [], (err, rows) => {
         if (err) {
             console.error("❌ Erro ao buscar dados:", err);
             return res.status(500).json({ 
-                error: "Erro interno ao buscar confirmações."
+                error: "Erro interno ao buscar confirmações." 
             });
         }
         
@@ -62,58 +58,44 @@ app.get("/api/rsvp", (req, res) => {
     });
 });
 
-// 📌 Rota para salvar RSVP (MANTENHA)
-app.post("/api/rsvp", (req, res) => {
-    const { name, contact, attending, message } = req.body;
-
-    console.log("📥 POST /api/rsvp - Recebendo RSVP:", { name, contact, attending });
-
-    if (!name?.trim() || !contact?.trim() || !attending?.trim()) {
-        return res.status(400).json({ 
-            error: "Campos obrigatórios faltando." 
-        });
-    }
-
-    db.run(
-        `INSERT INTO rsvp (name, contact, attending, message) VALUES (?, ?, ?, ?)`,
-        [name.trim(), contact.trim(), attending.trim(), message?.trim() || ""],
-        function(err) {
-            if (err) {
-                console.error("❌ Erro ao salvar no banco:", err);
-                return res.status(500).json({ 
-                    error: "Erro interno do servidor." 
-                });
-            }
-            
-            console.log(`✅ RSVP salvo com ID: ${this.lastID}`);
-            res.json({ 
-                success: true, 
-                message: "Confirmação registrada com sucesso!",
-                id: this.lastID 
-            });
-        }
-    );
-});
-
-// ✅ Middleware de erro 404 para API
-app.use("/api/*", (req, res) => {
-    res.status(404).json({ 
-        error: "Rota da API não encontrada",
-        path: req.originalUrl
-    });
-});
-
-// ✅ Servir frontend para outras rotas
-app.get("*", (req, res) => {
+// ✅ Rotas para páginas HTML - CORRIGIDAS
+app.get("/", (req, res) => {
+    console.log("📄 Servindo index.html");
     res.sendFile(path.join(__dirname, "../frontend/index.html"));
+});
+
+app.get("/presente", (req, res) => {
+    console.log("📄 Servindo presente.html");
+    res.sendFile(path.join(__dirname, "../frontend/presente.html"));
+});
+
+app.get("/respostas", (req, res) => {
+    console.log("📄 Servindo respostas.html");
+    res.sendFile(path.join(__dirname, "../frontend/respostas.html"));
+});
+
+// ✅ Middleware de logging para todas as requisições
+app.use((req, res, next) => {
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+    next();
+});
+
+// ✅ Rota catch-all para debug
+app.get("*", (req, res) => {
+    console.log(`❌ Rota não encontrada: ${req.method} ${req.url}`);
+    res.status(404).json({ 
+        error: "Rota não encontrada",
+        path: req.url,
+        method: req.method,
+        timestamp: new Date().toISOString()
+    });
 });
 
 // 📌 Iniciar servidor
 app.listen(PORT, "0.0.0.0", () => {
     console.log(`🚀 Servidor rodando na porta ${PORT}`);
-    console.log(`📍 Ambiente: ${process.env.NODE_ENV || 'production'}`);
-    console.log(`📍 Health check: http://localhost:${PORT}/health`);
-    console.log(`📍 API Test: http://localhost:${PORT}/api/test`);
+    console.log(`📍 Estrutura mantida: backend/frontend`);
+    console.log(`📍 Health: https://convitepedroedeborah.onrender.com/health`);
+    console.log(`📍 API Test: https://convitepedroedeborah.onrender.com/api/test`);
+    console.log(`📍 RSVP API: https://convitepedroedeborah.onrender.com/api/rsvp`);
 });
-
-module.exports = app;
