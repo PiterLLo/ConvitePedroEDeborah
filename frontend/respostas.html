@@ -14,6 +14,18 @@
             text-align: center;
             color: #333;
         }
+        .navigation {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .navigation a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #333;
+            padding: 5px 10px;
+            border: 1px solid #333;
+            border-radius: 5px;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -47,10 +59,21 @@
             margin-top: 15px;
             font-size: 16px;
             font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
         }
     </style>
 </head>
 <body>
+    <div class="navigation">
+        <a href="/">🏠 Home</a>
+        <a href="/presente">🎁 Lista de Presentes</a>
+        <a href="/respostas">📋 Ver Confirmações</a>
+    </div>
+
     <h1>Confirmações de Presença</h1>
     <div class="totais" id="totais">Carregando totais...</div>
     <table>
@@ -60,11 +83,12 @@
                 <th>Nome</th>
                 <th>Contato</th>
                 <th>Presença</th>
+                <th>Data</th>
             </tr>
         </thead>
         <tbody id="rsvp-list">
             <tr>
-                <td colspan="4" class="center">Carregando...</td>
+                <td colspan="5" class="center">Carregando...</td>
             </tr>
         </tbody>
     </table>
@@ -73,14 +97,19 @@
         async function carregarRSVP() {
             const tbody = document.getElementById('rsvp-list');
             const totaisDiv = document.getElementById('totais');
+            
             try {
                 const response = await fetch('/api/rsvp');
+                if (!response.ok) {
+                    throw new Error('Erro ao carregar dados');
+                }
+                
                 const dados = await response.json();
 
                 tbody.innerHTML = '';
 
                 if (!dados.length) {
-                    tbody.innerHTML = '<tr><td colspan="4" class="center">Nenhuma confirmação ainda</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="5" class="center">Nenhuma confirmação ainda</td></tr>';
                     totaisDiv.textContent = "Nenhum participante confirmado.";
                     return;
                 }
@@ -100,6 +129,7 @@
                         <td class="${rsvp.attending === 'yes' ? 'sim' : 'nao'}">
                             ${rsvp.attending === 'yes' ? '✔ Vai' : '✖ Não vai'}
                         </td>
+                        <td>${new Date(rsvp.created_at).toLocaleDateString('pt-BR')}</td>
                     `;
                     tbody.appendChild(tr);
                 });
@@ -107,7 +137,7 @@
                 totaisDiv.textContent = `✅ Confirmados: ${countSim} | ❌ Não irão: ${countNao} | 📋 Total de respostas: ${dados.length}`;
             } catch (err) {
                 console.error('Erro ao carregar RSVP:', err);
-                tbody.innerHTML = '<tr><td colspan="4" class="center">Erro ao carregar dados</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" class="center">Erro ao carregar dados</td></tr>';
                 totaisDiv.textContent = "Erro ao carregar totais.";
             }
         }
