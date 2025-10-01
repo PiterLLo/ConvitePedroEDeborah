@@ -25,6 +25,11 @@
             padding: 5px 10px;
             border: 1px solid #333;
             border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        .navigation a:hover {
+            background: #333;
+            color: white;
         }
         table {
             width: 100%;
@@ -32,6 +37,8 @@
             margin-top: 20px;
             background: #fff;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
         }
         th, td {
             padding: 12px;
@@ -39,7 +46,9 @@
             text-align: left;
         }
         th {
-            background-color: #f0f0f0;
+            background-color: #8B7355;
+            color: white;
+            font-weight: bold;
         }
         tr:hover {
             background-color: #f5f5f5;
@@ -60,10 +69,46 @@
             font-size: 16px;
             font-weight: bold;
             text-align: center;
-            padding: 10px;
+            padding: 15px;
             background: #fff;
-            border-radius: 5px;
+            border-radius: 8px;
             box-shadow: 0 0 5px rgba(0,0,0,0.1);
+            border-left: 4px solid #D4AF37;
+        }
+        .loading {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+        }
+        .error {
+            text-align: center;
+            color: red;
+            font-weight: bold;
+        }
+        .mensagem-col {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .mensagem-col:hover {
+            white-space: normal;
+            overflow: visible;
+            background: #f9f9f9;
+            position: relative;
+            z-index: 1;
+        }
+        @media (max-width: 768px) {
+            table {
+                font-size: 14px;
+            }
+            th, td {
+                padding: 8px;
+            }
+            .navigation a {
+                display: block;
+                margin: 5px 0;
+            }
         }
     </style>
 </head>
@@ -83,12 +128,13 @@
                 <th>Nome</th>
                 <th>Contato</th>
                 <th>Presença</th>
+                <th>Mensagem</th>
                 <th>Data</th>
             </tr>
         </thead>
         <tbody id="rsvp-list">
             <tr>
-                <td colspan="5" class="center">Carregando...</td>
+                <td colspan="6" class="center loading">Carregando confirmações...</td>
             </tr>
         </tbody>
     </table>
@@ -99,18 +145,21 @@
             const totaisDiv = document.getElementById('totais');
             
             try {
+                console.log('📥 Buscando dados da API...');
                 const response = await fetch('/api/rsvp');
+                
                 if (!response.ok) {
-                    throw new Error('Erro ao carregar dados');
+                    throw new Error(`Erro HTTP: ${response.status}`);
                 }
                 
                 const dados = await response.json();
+                console.log(`✅ Dados recebidos: ${dados.length} registros`);
 
                 tbody.innerHTML = '';
 
                 if (!dados.length) {
-                    tbody.innerHTML = '<tr><td colspan="5" class="center">Nenhuma confirmação ainda</td></tr>';
-                    totaisDiv.textContent = "Nenhum participante confirmado.";
+                    tbody.innerHTML = '<tr><td colspan="6" class="center loading">Nenhuma confirmação ainda</td></tr>';
+                    totaisDiv.textContent = "Nenhuma confirmação recebida ainda.";
                     return;
                 }
 
@@ -124,29 +173,46 @@
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
                         <td>${index + 1}</td>
-                        <td>${rsvp.name}</td>
-                        <td>${rsvp.contact}</td>
+                        <td>${rsvp.name || 'N/A'}</td>
+                        <td>${rsvp.contact || 'N/A'}</td>
                         <td class="${rsvp.attending === 'yes' ? 'sim' : 'nao'}">
-                            ${rsvp.attending === 'yes' ? '✔ Vai' : '✖ Não vai'}
+                            ${rsvp.attending === 'yes' ? '✔ Sim' : '✖ Não'}
                         </td>
-                        <td>${new Date(rsvp.created_at).toLocaleDateString('pt-BR')}</td>
+                        <td class="mensagem-col" title="${rsvp.message || ''}">
+                            ${rsvp.message || '-'}
+                        </td>
+                        <td>${new Date(rsvp.created_at).toLocaleDateString('pt-BR')} ${new Date(rsvp.created_at).toLocaleTimeString('pt-BR')}</td>
                     `;
                     tbody.appendChild(tr);
                 });
 
-                totaisDiv.textContent = `✅ Confirmados: ${countSim} | ❌ Não irão: ${countNao} | 📋 Total de respostas: ${dados.length}`;
+                totaisDiv.innerHTML = `
+                    <span style="color: green;">✅ Confirmados: ${countSim}</span> | 
+                    <span style="color: red;">❌ Não irão: ${countNao}</span> | 
+                    <span style="color: #333;">📋 Total de respostas: ${dados.length}</span>
+                `;
+
             } catch (err) {
-                console.error('Erro ao carregar RSVP:', err);
-                tbody.innerHTML = '<tr><td colspan="5" class="center">Erro ao carregar dados</td></tr>';
-                totaisDiv.textContent = "Erro ao carregar totais.";
+                console.error('❌ Erro ao carregar RSVP:', err);
+                tbody.innerHTML = '<tr><td colspan="6" class="center error">Erro ao carregar dados. Tente recarregar a página.</td></tr>';
+                totaisDiv.innerHTML = '<span style="color: red;">❌ Erro ao carregar totais</span>';
             }
         }
 
         // Carrega os dados ao abrir a página
-        carregarRSVP();
+        document.addEventListener('DOMContentLoaded', function() {
+            carregarRSVP();
+            
+            // Atualiza a cada 30 segundos (aumentei o tempo)
+            setInterval(carregarRSVP, 30000);
+        });
 
-        // Atualiza a cada 10 segundos
-        setInterval(carregarRSVP, 10000);
+        // Também recarrega quando a página ganha foco
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                carregarRSVP();
+            }
+        });
     </script>
 </body>
 </html>
