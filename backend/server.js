@@ -63,10 +63,17 @@ app.get("/api/rsvp", (req, res) => {
 app.post("/api/rsvp", (req, res) => {
     const { name, contact, attending, message } = req.body;
 
-    console.log("📥 POST /api/rsvp - Recebendo RSVP:", { name, contact, attending, message });
+    console.log("📥 POST /api/rsvp - Dados recebidos:", { 
+        name, 
+        contact, 
+        attending, 
+        message,
+        body: req.body
+    });
 
     // Validação
     if (!name?.trim() || !contact?.trim() || !attending?.trim()) {
+        console.log("❌ Validação falhou - campos obrigatórios faltando");
         return res.status(400).json({ 
             error: "Campos obrigatórios faltando: nome, contato e confirmação são obrigatórios." 
         });
