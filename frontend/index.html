@@ -829,7 +829,7 @@
   </div>
 
   <main class="container mx-auto px-4 py-12 max-w-6xl">
-    <!-- RSVP Section -->
+    <!-- RSVP Section CORRIGIDA -->
     <section id="rsvp" class="mb-20">
       <h2 class="font-heading text-3xl md:text-4xl text-center mb-4">Confirmação de Presença</h2>
       <div class="section-divider"></div>
@@ -859,8 +859,14 @@
             </div>
           </div>
           
+          <!-- CAMPO DE CONTATO ADICIONADO -->
           <div>
-            <label class="block mb-2 font-semibold">Nome(s) dos convidados</label>
+            <label for="contact" class="block mb-2 font-semibold">Seu telefone ou email *</label>
+            <input type="text" id="contact" name="contact" required class="form-input" placeholder="(11) 99999-9999 ou email@exemplo.com">
+          </div>
+          
+          <div>
+            <label class="block mb-2 font-semibold">Nome(s) dos convidados *</label>
             <div id="nameFieldsContainer">
               <!-- Primeiro campo de nome -->
               <div class="name-field-container">
@@ -877,7 +883,7 @@
           
           <div>
             <label for="message" class="block mb-2 font-semibold">Mensagem para os noivos (opcional)</label>
-            <textarea id="message" rows="4" class="form-textarea"></textarea>
+            <textarea id="message" name="message" rows="4" class="form-textarea" placeholder="Deixe uma mensagem especial..."></textarea>
           </div>
           <button type="submit" class="submit-button">
             Enviar Confirmação
@@ -1000,25 +1006,78 @@
       // Adicionar evento ao botão de adicionar nome
       addNameBtn.addEventListener('click', addNameField);
 
-      // Form submission
-      form.addEventListener('submit', (e) => {
+      // Form submission CORRIGIDO
+      form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        // Coletar todos os nomes
-        const nameInputs = document.querySelectorAll('input[name="guestName[]"]');
-        const names = Array.from(nameInputs).map(input => input.value).filter(name => name.trim() !== '');
-        
-        // Aqui você normalmente enviaria os dados para um servidor
-        console.log('Nomes dos convidados:', names);
-        
-        // Mostrar mensagem de agradecimento
-        form.classList.add('hidden');
-        thankYou.classList.remove('hidden');
-        form.reset();
-        
-        // Restaurar apenas um campo de nome
-        nameFieldsContainer.innerHTML = '';
-        addNameField();
+        try {
+          // Coletar dados básicos do formulário
+          const attending = document.querySelector('input[name="attending"]:checked').value;
+          const contact = document.getElementById('contact').value;
+          const message = document.getElementById('message').value;
+          
+          // Coletar todos os nomes
+          const nameInputs = document.querySelectorAll('input[name="guestName[]"]');
+          const names = Array.from(nameInputs)
+            .map(input => input.value.trim())
+            .filter(name => name !== '');
+
+          // Validações
+          if (names.length === 0) {
+            alert('Por favor, insira pelo menos um nome.');
+            return;
+          }
+
+          if (!contact.trim()) {
+            alert('Por favor, insira seu telefone ou email.');
+            return;
+          }
+
+          console.log('📤 Enviando dados para o servidor...', { names, contact, attending, message });
+
+          // Enviar cada nome individualmente para o servidor
+          const promises = names.map(async (name) => {
+            const data = {
+              name: name,
+              contact: contact.trim(),
+              attending: attending,
+              message: message.trim()
+            };
+
+            console.log('Enviando dados para API:', data);
+
+            const response = await fetch('/api/rsvp', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(data)
+            });
+
+            if (!response.ok) {
+              const errorText = await response.text();
+              throw new Error(`Erro HTTP: ${response.status} - ${errorText}`);
+            }
+
+            return response.json();
+          });
+
+          // Aguardar todas as requisições
+          const results = await Promise.all(promises);
+          console.log('✅ Todas as confirmações salvas:', results);
+          
+          // Mostrar mensagem de sucesso
+          form.classList.add('hidden');
+          thankYou.classList.remove('hidden');
+          
+          // Restaurar apenas um campo de nome
+          nameFieldsContainer.innerHTML = '';
+          addNameField();
+
+        } catch (error) {
+          console.error('❌ Erro ao enviar confirmação:', error);
+          alert('Erro ao enviar confirmação. Por favor, tente novamente ou entre em contato conosco.');
+        }
       });
 
       // Mobile menu toggle
